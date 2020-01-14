@@ -1,6 +1,5 @@
-import yaml
 import numpy as np
-from input_handler import mapping
+from .input_handler import mapping
 
 def sigmoid(x):
     return 1. / (1. + np.exp(-x))
@@ -31,18 +30,22 @@ class Taskset:
         start = 0
         end = start + num_input * num_hidden_max
         w1 = solution[start:end].reshape(num_input, num_hidden_max)[:, :num_hidden]
+        w1 = w1 * 10 - 5
 
         start = end
         end = start + num_hidden_max
         b1 = solution[start:end][:num_hidden]
+        b1 = b1 * 10 - 5
 
         start = end
         end = start + num_hidden_max
         w2 = solution[start:end].reshape(num_hidden_max, 1)[:num_hidden, :]
+        w2 = w2 * 10 - 5
 
         start = end
         end = start + 1
         b2 = solution[start:end]
+        b2 = b2 * 10 - 5
         return w1, b1, w2, b2
 
     def evaluate(self, solution, sf):

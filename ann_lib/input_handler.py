@@ -1,8 +1,11 @@
+import os
 import csv
 import numpy as np
 
+BASEDIR = os.path.dirname(__file__)
+
 def ionosphere(link):
-    with open(link, "r") as f:
+    with open(os.path.join(BASEDIR, link), "r") as f:
         reader = csv.reader(f, delimiter=',')
 
         in_tmp = []
