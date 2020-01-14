@@ -1,0 +1,9 @@
+ionosphere:
+    name: ionosphere
+    path: data/ionosphere/ionosphere.data
+    input: 34
+    hiddens:
+        - 6
+        - 8
+        - 10
+    output: 1
