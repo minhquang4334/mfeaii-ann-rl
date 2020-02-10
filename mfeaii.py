@@ -1,15 +1,15 @@
 from mfea_ii_lib import *
 
-def mfea(taskset, config, callback=None):
+def mfeaii(taskset, config, callback=None):
     # unpacking hyper-parameters
     K = len(taskset.config['hiddens'])
     N = config['pop_size'] * K
     D = taskset.D_multitask
     T = config['num_iter']
     sbxdi = config['sbxdi']
-    pmdi = config['pmdi']
+    pmdi  = config['pmdi']
     pswap = config['pswap']
-    rmp = config['rmp']
+    rmp_matrix = np.zeros([K, K])
 
     # initialize
     population = np.random.rand(2 * N, D)
@@ -21,16 +21,18 @@ def mfea(taskset, config, callback=None):
     for i in range(2 * N):
         sf = skill_factor[i]
         factorial_cost[i, sf] = taskset.evaluate(population[i], sf)
+        # factorial_cost[i, sf] = functions[sf](population[i])
     scalar_fitness = calculate_scalar_fitness(factorial_cost)
 
-    # sort
+    # sort 
     sort_index = np.argsort(scalar_fitness)[::-1]
     population = population[sort_index]
     skill_factor = skill_factor[sort_index]
     factorial_cost = factorial_cost[sort_index]
-    final_results = []
+
     # evolve
     iterator = trange(T)
+    final_results = []
     for t in iterator:
         # permute current population
         permutation_index = np.random.permutation(N)
@@ -38,6 +40,10 @@ def mfea(taskset, config, callback=None):
         skill_factor[:N] = skill_factor[:N][permutation_index]
         factorial_cost[:N] = factorial_cost[:N][permutation_index]
         factorial_cost[N:] = np.inf
+
+        # learn rmp
+        subpops    = get_subpops(population, skill_factor, N)
+        rmp_matrix = learn_rmp(subpops, D)
 
         # select pair to crossover
         for i in range(0, N, 2):
@@ -52,21 +58,17 @@ def mfea(taskset, config, callback=None):
                 c1, c2 = variable_swap(c1, c2, pswap)
                 skill_factor[N + i] = sf1
                 skill_factor[N + i + 1] = sf1
-            elif sf1 != sf2 and np.random.rand() < rmp:
+            elif sf1 != sf2 and np.random.rand() < rmp_matrix[sf1, sf2]:
                 c1, c2 = sbx_crossover(p1, p2, sbxdi)
                 c1 = mutate(c1, pmdi)
                 c2 = mutate(c2, pmdi)
                 # c1, c2 = variable_swap(c1, c2, pswap)
-                if np.random.rand() < 0.5:
-                    skill_factor[N + i] = sf1
-                else:
-                    skill_factor[N + i] = sf2
-                if np.random.rand() < 0.5:
-                    skill_factor[N + i + 1] = sf1
-                else:
-                    skill_factor[N + i + 1] = sf2
+                if np.random.rand() < 0.5: skill_factor[N + i] = sf1
+                else: skill_factor[N + i] = sf2
+                if np.random.rand() < 0.5: skill_factor[N + i + 1] = sf1
+                else: skill_factor[N + i + 1] = sf2
             else:
-                p2 = find_relative(population, skill_factor, sf1, N)
+                p2  = find_relative(population, skill_factor, sf1, N)
                 c1, c2 = sbx_crossover(p1, p2, sbxdi)
                 c1 = mutate(c1, pmdi)
                 c2 = mutate(c2, pmdi)
@@ -80,6 +82,7 @@ def mfea(taskset, config, callback=None):
         for i in range(N, 2 * N):
             sf = skill_factor[i]
             factorial_cost[i, sf] = taskset.evaluate(population[i], sf)
+            # factorial_cost[i, sf] = functions[sf](population[i])
         scalar_fitness = calculate_scalar_fitness(factorial_cost)
 
         # sort
@@ -87,26 +90,20 @@ def mfea(taskset, config, callback=None):
         population = population[sort_index]
         skill_factor = skill_factor[sort_index]
         factorial_cost = factorial_cost[sort_index]
-        scalar_fitness = scalar_fitness[sort_index]
 
+        best_fitness = np.min(factorial_cost, axis=0)
         c1 = population[np.where(skill_factor == 0)][0]
         c2 = population[np.where(skill_factor == 1)][0]
+        scalar_fitness = scalar_fitness[sort_index]
 
         # optimization info
-        message = {'algorithm': 'mfea', 'rmp': rmp}
-        results = get_optimization_results(
-            t,
-            population,
-            factorial_cost,
-            scalar_fitness,
-            skill_factor,
-            message)
+        message = {'algorithm': 'mfeaii', 'rmp':round(rmp_matrix[0, 1], 1)}
+        results = get_optimization_results(t, population, factorial_cost, scalar_fitness, skill_factor, message)
         if callback:
             callback(results)
 
-        desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join(
-            '{:0.6f}'.format(res.fun) for res in results), message)
+        desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join('{:0.6f}'.format(res.fun) for res in results), message)
         iterator.set_description(desc)
         final_results.append(get_result(results))
-
     return final_results
+

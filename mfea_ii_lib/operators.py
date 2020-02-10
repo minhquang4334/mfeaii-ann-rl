@@ -134,3 +134,9 @@ def get_best_individual(population, factorial_cost, scalar_fitness, skill_factor
   x = subpop[idx]
   fun = sub_factorial_cost[idx, sf]
   return x, fun
+
+def get_result(results):
+  result = []
+  for res in results:
+    result.append(res.fun)
+  return result

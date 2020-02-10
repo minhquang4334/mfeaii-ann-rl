@@ -27,7 +27,7 @@ def cea(taskset, config, callback=None):
     population = population[sort_index]
     skill_factor = skill_factor[sort_index]
     factorial_cost = factorial_cost[sort_index]
-
+    final_results = []
     # evolve
     iterator = trange(T)
     for t in iterator:
@@ -85,5 +85,6 @@ def cea(taskset, config, callback=None):
         desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join(
             '{:0.6f}'.format(res.fun) for res in results), message)
         iterator.set_description(desc)
+        final_results.append(get_result(results))
 
-    return results
+    return final_results
