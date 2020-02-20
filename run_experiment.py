@@ -6,6 +6,7 @@ from experiment import *
 
 instances = get_config('ann_lib/data/instances.yaml')
 methods = {'cea': cea, 'mfea': mfea, 'mfeaii': mfeaii}
+methods = {'mfeaii': mfeaii}
 
 config = get_config('config.yaml')
 conn = create_connection(config)
@@ -26,6 +27,7 @@ for seed in range(config['repeat']):
                     kwargs = {'method_id': method_id,
                               'instance_id': instance_id,
                               'best': result[k].fun,
+                              'rmp': result[k].message['rmp'],
                               'best_solution': serialize(result[k].x),
                               'num_iteration': result[k].nit,
                               'num_evaluation': result[k].nfev,

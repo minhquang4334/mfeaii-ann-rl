@@ -12,7 +12,12 @@ conn = create_connection(config)
 drop_experiment(conn, config)
 create_experiment(conn, config)
 
+cur = conn.cursor()
+cur.execute('ALTER TABLE iteration ADD COLUMN rmp VARCHAR(128);')
+conn.commit()
+
 alter_method(conn, config)
+
 for instance in instances:
     instance_data = instances[instance]
     for hidden in instance_data['hiddens']:

@@ -93,7 +93,7 @@ def mfea(taskset, config, callback=None):
         c2 = population[np.where(skill_factor == 1)][0]
 
         # optimization info
-        message = {'algorithm': 'mfea', 'rmp': rmp}
+        message = {'algorithm': 'mfea', 'rmp': str(rmp)}
         result = get_optimization_results(
             t,
             population,

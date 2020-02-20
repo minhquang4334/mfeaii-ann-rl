@@ -96,7 +96,7 @@ def mfeaii(taskset, config, callback=None):
         scalar_fitness = scalar_fitness[sort_index]
 
         # optimization info
-        message = {'algorithm': 'mfeaii', 'rmp':round(rmp_matrix[0, 1], 1)}
+        message = {'algorithm': 'mfeaii', 'rmp':'{}-{}-{}'.format(rmp_matrix[0, 1], rmp_matrix[0, 2], rmp_matrix[1, 2])}
         result = get_optimization_results(t, population, factorial_cost, scalar_fitness, skill_factor, message)
         if callback:
             callback(result)

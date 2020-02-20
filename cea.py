@@ -71,7 +71,7 @@ def cea(taskset, config, callback=None):
         c2 = population[np.where(skill_factor == 1)][0]
 
         # optimization info
-        message = {'algorithm': 'cea'}
+        message = {'algorithm': 'cea', 'rmp': '0'}
         result = get_optimization_results(
             t,
             population,
