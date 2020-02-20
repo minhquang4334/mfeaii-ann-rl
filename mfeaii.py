@@ -32,7 +32,6 @@ def mfeaii(taskset, config, callback=None):
 
     # evolve
     iterator = trange(T)
-    final_results = []
     for t in iterator:
         # permute current population
         permutation_index = np.random.permutation(N)
@@ -98,12 +97,10 @@ def mfeaii(taskset, config, callback=None):
 
         # optimization info
         message = {'algorithm': 'mfeaii', 'rmp':round(rmp_matrix[0, 1], 1)}
-        results = get_optimization_results(t, population, factorial_cost, scalar_fitness, skill_factor, message)
+        result = get_optimization_results(t, population, factorial_cost, scalar_fitness, skill_factor, message)
         if callback:
-            callback(results)
+            callback(result)
 
-        desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join('{:0.6f}'.format(res.fun) for res in results), message)
+        desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join('{:0.6f}'.format(res.fun) for res in result), message)
         iterator.set_description(desc)
-        final_results.append(get_result(results))
-    return final_results
 
