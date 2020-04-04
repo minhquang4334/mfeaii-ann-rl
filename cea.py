@@ -27,7 +27,7 @@ def cea(taskset, config, callback=None):
     population = population[sort_index]
     skill_factor = skill_factor[sort_index]
     factorial_cost = factorial_cost[sort_index]
-    final_results = []
+
     # evolve
     iterator = trange(T)
     for t in iterator:
@@ -71,8 +71,8 @@ def cea(taskset, config, callback=None):
         c2 = population[np.where(skill_factor == 1)][0]
 
         # optimization info
-        message = {'algorithm': 'cea'}
-        results = get_optimization_results(
+        message = {'algorithm': 'cea', 'rmp': '0'}
+        result = get_optimization_results(
             t,
             population,
             factorial_cost,
@@ -80,11 +80,8 @@ def cea(taskset, config, callback=None):
             skill_factor,
             message)
         if callback:
-            callback(results)
+            callback(result)
 
         desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join(
-            '{:0.6f}'.format(res.fun) for res in results), message)
+            '{:0.6f}'.format(res.fun) for res in result), message)
         iterator.set_description(desc)
-        final_results.append(get_result(results))
-
-    return final_results

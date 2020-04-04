@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from wsgiref.handlers import CGIHandler
 
 repeat = 1
 NUMBER_OF_ALG1_TASK = 3
@@ -15,7 +16,13 @@ def load(algorithm):
     return np.array(results)
 
 
+
 def main():
+    config = get_config('config.yaml')
+    conn = create_connection(config)
+    cur = conn.cursor()
+    cur.execute('SELECT TABLE iteration ADD COLUMN rmp VARCHAR(128);')
+
     results1 = load("mfea_result")
     results2 = load("mfeaii_result")
     fig, axes = plt.subplots(2, 3)

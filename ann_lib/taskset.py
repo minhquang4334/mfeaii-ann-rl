@@ -61,9 +61,10 @@ class Taskset:
         return mse(self.y, out)
 
 if __name__ == '__main__':
-    config = yaml.load(open('data/instances.yaml').read())
-    instance = 'ionosphere'
-    taskset = Taskset(config[instance])
+    pass
+    # config = yaml.load(open('data/instances.yaml').read())
+    # instance = 'ionosphere'
+    # taskset = Taskset(config[instance])
 
-    solution = np.random.rand(taskset.D_multitask)
-    print(taskset.evaluate(solution, 2))
+    # solution = np.random.rand(taskset.D_multitask)
+    # print(taskset.evaluate(solution, 2))
