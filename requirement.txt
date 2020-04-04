@@ -1,0 +1,9 @@
+numpy
+scipy
+pandas
+scikit-learn
+tqdm
+pyyaml
+pymysql
+experiment-ltt
+termcolor

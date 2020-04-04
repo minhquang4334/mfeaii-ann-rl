@@ -1,7 +1,7 @@
 import os
 import yaml
 from .taskset import Taskset
-
+from .input_handler import *
 BASEDIR = os.path.dirname(__file__)
 
 def create_taskset(instance):
