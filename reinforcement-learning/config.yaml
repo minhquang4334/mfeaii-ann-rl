@@ -4,5 +4,5 @@ sbxdi: 2
 pmdi: 5
 pswap: 0.5
 dimension: 50
-rmp: 0.3
 repeat: 20
+tasks_num: 10
