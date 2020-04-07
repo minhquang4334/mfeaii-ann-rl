@@ -1,17 +1,28 @@
-pop_size: 90
-num_iter: 1000
-sbxdi: 2
-pmdi: 5
-pswap: 0.5
-dimension: 50
-rmp: 0.3
-repeat: 10
-
-host: localhost
-user: root
-password: quang4334
-db: mfea_2
-verbose: false
-
-method:
-    name: VARCHAR(255)
+ea:    
+    pop_size: 90
+    num_iter: 1000
+    sbxdi: 2
+    pmdi: 5
+    pswap: 0.5
+    dimension: 50
+    rmp: 0.3
+    repeat: 10
+database:
+    host: localhost
+    user: root
+    password: quang4334
+    db: mfea_2
+    verbose: false
+    method:
+        name: VARCHAR(255)
+sgd:
+    learning_rate: 0.1
+    mRate: 0.01
+    num_epoch: 3000
+    repeat: 10
+    max_eval: 200000
+    train_dropout: 0.2
+    test_dropout: 0.4
+    useStocasticGD: 1 # 0 for vanilla BP. 1 for Stocastic BP
+    useVanilla: 1 # 1 for Vanilla Gradient Descent, 0 for Gradient Descent with momentum (either regular momentum or nesterov momen)
+    useNestmomen: 0 # 0 for regular momentum, 1 for Nesterov momentum

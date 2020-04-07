@@ -5,7 +5,7 @@ from mfeaii import *
 from experiment import *
 
 instances = get_config('ann_lib/data/instances.yaml')
-methods = {'cea': cea, 'mfea': mfea, 'mfeaii': mfeaii, 'gd': gd}
+methods = {'cea': cea, 'mfea': mfea, 'mfeaii': mfeaii, 'sgd': ''}
 
 config = get_config('config.yaml')
 conn = create_connection(config)
