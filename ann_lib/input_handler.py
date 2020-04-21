@@ -100,7 +100,7 @@ def creditScreening(link):
         #out_arr = out_arr.reshape((len(data_minmax), 1))
         #print(in_arr)
         #print(out_arr.shape)
-        return in_arr.T, out_arr.astype(np.float64)
+        return in_arr.T, out_arr.T.astype(np.float64)
         pass
 
 def breastCancer(link):
@@ -151,10 +151,10 @@ def generateNbitDataSet(N):
             Y[0][j] = 0 # 0
         else:
             Y[0][j] = 1 # 1
-    print('X')
-    print(X.astype(float))
-    print('Y')
-    print(Y.astype(float))
+    # print('X')
+    # print(X.astype(float))
+    # print('Y')
+    # print(Y.astype(float))
     X, Y = X.T, Y.T
     return X.astype(int), Y.astype(int)
     pass
@@ -170,7 +170,7 @@ def increment(X, times):
             X[i] = 1
         cur_times += 1
 
-mapping = {'ionosphere':ionosphere, 'ticTacToe': ticTacToe, 'creditScreening' : creditScreening, 'breastCancer' : breastCancer, 'nbit' : generateNbitDataSet}
+mapping = {'ionosphere':ionosphere, 'ticTacToe': ticTacToe, 'creditScreening' : creditScreening, 'breastCancer' : breastCancer, 'generateNbitDataSet' : generateNbitDataSet}
 
 if __name__ == '__main__':
     input, out  = generateNbitDataSet(8)

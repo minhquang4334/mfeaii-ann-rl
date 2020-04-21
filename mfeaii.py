@@ -9,7 +9,8 @@ def mfeaii(taskset, config, callback=None):
     sbxdi = config['sbxdi']
     pmdi  = config['pmdi']
     pswap = config['pswap']
-    rmp_matrix = np.zeros([K, K])
+    # rmp_matrix = np.zeros([K, K])
+    rmp_matrix = np.eye(K)
 
     # initialize
     population = np.random.rand(2 * N, D)

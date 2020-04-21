@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from data import *
+from .instance import *
 
 repeat = 1
 NUMBER_OF_ALG1_TASK = 3

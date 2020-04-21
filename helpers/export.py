@@ -1,5 +1,5 @@
-from helpers import *
-from instance import *
+from .helpers import *
+from .instance import *
 
 def export_result(instances):
     ''' print template

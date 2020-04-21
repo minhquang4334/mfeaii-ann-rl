@@ -1,3 +1,83 @@
+nbit_4_1:
+    name: generateNbitDataSet
+    path: 4
+    input: 4
+    hiddens:
+        - 4
+        - 5
+        - 6
+    output: 1
+
+nbit_4_2:
+    name: generateNbitDataSet
+    path: 4
+    input: 4
+    hiddens:
+        - 6
+        - 7
+        - 8
+    output: 1
+
+nbit_6_1:
+    name: generateNbitDataSet
+    path: 6
+    input: 6
+    hiddens:
+        - 4
+        - 5
+        - 6
+    output: 1
+
+nbit_6_2:
+    name: generateNbitDataSet
+    path: 6
+    input: 6
+    hiddens:
+        - 5
+        - 6
+        - 7
+    output: 1
+
+nbit_6_3:
+    name: generateNbitDataSet
+    path: 6
+    input: 6
+    hiddens:
+        - 6
+        - 7
+        - 8
+    output: 1
+
+nbit_8_1:
+    name: generateNbitDataSet
+    path: 8
+    input: 8
+    hiddens:
+        - 5
+        - 6
+        - 7
+    output: 1
+
+nbit_8_2:
+    name: generateNbitDataSet
+    path: 8
+    input: 8
+    hiddens:
+        - 7
+        - 8
+        - 9
+    output: 1
+
+nbit_8_3:
+    name: generateNbitDataSet
+    path: 8
+    input: 8
+    hiddens:
+        - 8
+        - 9
+        - 10
+    output: 1
+
 ionosphere:
     name: ionosphere
     path: data/ionosphere/ionosphere.data
@@ -36,95 +116,4 @@ breastCancer:
         - 4
         - 6
         - 8
-    output: 1
-
-nbit:
-    name: nbit
-    path: 8
-    input: 8
-    hiddens:
-        - 6
-        - 8
-        - 10
-    output: 1
-
-
-nbit_4_1:
-    name: nbit
-    path: 4
-    input: 4
-    hiddens:
-        - 4
-        - 5
-        - 6
-    output: 1
-
-nbit_4_2:
-    name: nbit
-    path: 4
-    input: 4
-    hiddens:
-        - 6
-        - 7
-        - 8
-    output: 1
-
-nbit_6_1:
-    name: nbit
-    path: 6
-    input: 6
-    hiddens:
-        - 4
-        - 5
-        - 6
-    output: 1
-
-nbit_6_2:
-    name: nbit
-    path: 6
-    input: 6
-    hiddens:
-        - 5
-        - 6
-        - 7
-    output: 1
-
-nbit_6_3:
-    name: nbit
-    path: 6
-    input: 6
-    hiddens:
-        - 6
-        - 7
-        - 8
-    output: 1
-
-nbit_8_1:
-    name: nbit
-    path: 8
-    input: 8
-    hiddens:
-        - 5
-        - 6
-        - 7
-    output: 1
-
-nbit_8_2:
-    name: nbit
-    path: 8
-    input: 8
-    hiddens:
-        - 7
-        - 8
-        - 9
-    output: 1
-
-nbit_8_3:
-    name: nbit
-    path: 8
-    input: 8
-    hiddens:
-        - 8
-        - 9
-        - 10
     output: 1
