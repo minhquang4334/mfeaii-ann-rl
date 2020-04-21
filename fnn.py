@@ -167,8 +167,9 @@ class Network:
                 self.BackwardPassMomentum(Input , Desired, vanilla)
                 sse = sse+ self.sampleEr(Desired)
              
-            mse = np.sqrt(sse/self.NumSamples*self.Top[2])
-
+            # mse = np.sqrt(sse/self.NumSamples*self.Top[2]) # root mean square error
+            # sse/self.NumSamples error tren 1 sample * 0.5 -> lay mse tren 1 sample
+            mse = 0.5 * sse/self.NumSamples 
             if mse < bestmse:
                bestmse = mse
                self.saveKnowledge() 
@@ -188,95 +189,88 @@ def normalisedata(data, inputsize, outsize): # normalise the data between [0,1]
     traindt = data[:,np.array(range(0,inputsize))]	
     dt = np.amax(traindt, axis=0)
     tds = abs(traindt/dt) 
-    return np.concatenate(( tds[:,range(0,inputsize)], data[:,range(inputsize,inputsize+outsize)]), axis=1)
+    return np.concatenate(( tds[:,range(0,inputsize)], data[:,range(inputsize,inputsize+outsize)]), axis=1)      
 
-def main(): 
-        problem = 2 # [1,2,3] choose your problem (Iris classfication or 4-bit parity or XOR gate)
-        if problem == 1:
-            TrDat  = np.loadtxt("train.csv", delimiter=',') #  Iris classification problem (UCI dataset)
-            TesDat  = np.loadtxt("test.csv", delimiter=',') 
-            Hidden = 6
-            Input = 4
-            Output = 2
-            TrSamples =  110
-            TestSize = 40
-            learnRate = 0.1 
-            mRate = 0.01   
-            TrainData  = normalisedata(TrDat, Input, Output)
-            TestData  = normalisedata(TesDat, Input, Output)
-            MaxTime = 500
+from ann_lib import *
+from mfea_ii_lib import *
+from experiment import *
+from fnn import *
+from helpers import *
+from sklearn.model_selection import train_test_split
 
-        if problem == 2:
-            TrainData = np.loadtxt("4bit.csv", delimiter=',') #  4-bit parity problem
-            TestData = np.loadtxt("4bit.csv", delimiter=',') #
-            Hidden = 4
-            Input = 4
-            Output = 1
-            TrSamples =  16
-            TestSize = 16
-            learnRate = 0.9
-            mRate = 0.01
-            MaxTime = 3000
- 	        
+sgd_method = {'sgd': ''}
+# methods = {'mfeaii': mfeaii}
 
-        if problem == 3:
-            TrainData = np.loadtxt("xor.csv", delimiter=',') #  4-bit parity problem
-            TestData = np.loadtxt("xor.csv", delimiter=',') #  
-            Hidden = 3
-            Input = 2
-            Output = 1
-            TrSamples =  4
-            TestSize = 4
-            learnRate = 0.9 
-            mRate = 0.01
-            MaxTime = 500
+config = get_config('config.yaml')
+db = config['database']
+conn = create_connection(db)
 
-        print(TrainData)
-        Topo = [Input, Hidden, Output] 
-        MaxRun = 10 # number of experimental runs 
-         
-        MinCriteria = 95 #stop when learn 95 percent
+def run_sgd(instance, hidden=10, is_n_bit=False):
+    # get config
+    sgd_method_id = get_method_from_name('sgd')
+    local_config = config['sgd']
+
+    # Create Task Set
+    taskset = create_taskset(instance)
+    if(is_n_bit):
+        taskset.X, taskset.y = taskset.X[0:64, :], taskset.y[0:64, :] # if n-bit problem
+    print (taskset.X.shape, taskset.y.shape)
+    X_train, X_test, y_train, y_test = train_test_split(
+    taskset.X, taskset.y, test_size=0.25, random_state=42)
+    TrainData = np.concatenate((X_train, y_train), axis=1)
+    TestData = np.concatenate((X_test, y_test), axis=1)
+    
+    # Set Network Config
+    Hidden = hidden
+    Input = np.asarray(X_train).shape[1]
+    Output = np.asarray(y_train).shape[1]
+    TrSamples =  TrainData.shape[0]
+    TestSize = TestData.shape[0]
+    Topo = [Input, Hidden, Output] 
+
+    #save result    
+    MaxRun = local_config['repeat']
+    trainPerf, testPerf, trainMSE, testMSE, Epochs, Time = tuple(np.repeat([np.zeros(MaxRun)], 6, axis=0))
+
+    print (TrainData.shape, TestData.shape, Input, Output, TrSamples, TestSize, Topo)
+    for run in range(0, MaxRun):
+        results = {}
+        print (run)
+        fnnSGD = Network(Topo, TrainData, TestData, local_config['num_epoch'], TrSamples, local_config['max_eval']) # Stocastic GD
+        start_time=time.time()
+        (erEp,  trainMSE[run] , trainPerf[run] , Epochs[run], results) = fnnSGD.BP_GD(local_config['learning_rate'], local_config['mRate'], local_config['useNestmomen'],  local_config['useStocasticGD'], local_config['useVanilla'])   
         
-        trainTolerance = 0.2 # [eg 0.15 would be seen as 0] [ 0.81 would be seen as 1]
-        testTolerance = 0.4
-        
-        useStocasticGD = 1 # 0 for vanilla BP. 1 for Stocastic BP
-        useVanilla = 1 # 1 for Vanilla Gradient Descent, 0 for Gradient Descent with momentum (either regular momentum or nesterov momen) 
-        useNestmomen = 0 # 0 for regular momentum, 1 for Nesterov momentum
-
-        trainPerf = np.zeros(MaxRun)
-        testPerf =  np.zeros(MaxRun)
-
-        trainMSE =  np.zeros(MaxRun)
-        testMSE =  np.zeros(MaxRun)
-        Epochs =  np.zeros(MaxRun)
-        Time =  np.zeros(MaxRun)
-
-        for run in range(0, MaxRun):
-            print (run)
-            fnnSGD = Network(Topo, TrainData, TestData, MaxTime, TrSamples, MinCriteria) # Stocastic GD
-            start_time=time.time()
-            (erEp,  trainMSE[run] , trainPerf[run] , Epochs[run]) = fnnSGD.BP_GD(learnRate, mRate, useNestmomen,  useStocasticGD, useVanilla)   
-
-            Time[run]  =time.time()-start_time
-            (testMSE[run], testPerf[run]) = fnnSGD.TestNetwork(TestData, TestSize, testTolerance)
-                 
+        Time[run]  =time.time() - start_time
+        (testMSE[run], testPerf[run]) = fnnSGD.TestNetwork(TestData, TestSize, local_config['test_dropout'])
+        # Save result
+        instance_id = get_instance_id(conn, db, instance, '{}-hidden'.format(hidden))
+        for result in results:
+            kwargs = {  'method_id': sgd_method_id,
+                        'instance_id': instance_id,
+                        'best': result.fun,
+                        'rmp': result.message,
+                        'best_solution': serialize(result.x),
+                        'num_iteration': result.nit,
+                        'num_evaluation': result.nfev,
+                        'seed': run,
+                        }
+            add_iteration(conn, db, **kwargs)
                 
-        print (trainPerf)  #[ 93.75 100.    75.   100.    93.75  93.75 100.   100.   100.   100.  ]
-        print (testPerf) #[ 93.75 100.   100.   100.    93.75  93.75 100.   100.   100.   100.  ]
-        print (trainMSE) # [0.01833272 0.02443385 0.01638689 0.01479283 0.0181849  0.03819253 0.01352228 0.02045447 0.03080476 0.03558831]
-        print (testMSE) # [0.05162192 0.0020806  0.00169465 0.00403099 0.05158068 0.05243595 0.00091951 0.00348021 0.00418387 0.00441024]
+    print (trainPerf)  #[ 93.75 100.    75.   100.    93.75  93.75 100.   100.   100.   100.  ]
+    print (testPerf) #[ 93.75 100.   100.   100.    93.75  93.75 100.   100.   100.   100.  ]
+    print (trainMSE) # [0.01833272 0.02443385 0.01638689 0.01479283 0.0181849  0.03819253 0.01352228 0.02045447 0.03080476 0.03558831]
+    print (testMSE) # [0.05162192 0.0020806  0.00169465 0.00403099 0.05158068 0.05243595 0.00091951 0.00348021 0.00418387 0.00441024]
 
-        print (Epochs) # [3000. 2469. 3000. 2622. 3000. 3000. 2488. 1886. 1714. 1508.]
-        print (Time) # [2.17364597 1.85449409 2.2716279  2.05616307 2.483567   2.94070888 2.18178201 1.59249997 1.40714502 1.19133902]
-        print(np.mean(trainPerf), np.std(trainPerf)) # (95.625, 7.421463804398698)
-        print(np.mean(testPerf), np.std(testPerf)) # (98.125, 2.8641098093474)
-        print(np.mean(Time), np.std(Time)) # (2.015297293663025, 0.49489409397464507)
-         
-        plt.figure()
-        plt.plot(erEp )
-        plt.ylabel('error')  
-        plt.savefig('out.png')
-       
- 
-if __name__ == "__main__": main()
+    print (Epochs) # [3000. 2469. 3000. 2622. 3000. 3000. 2488. 1886. 1714. 1508.]
+    print (Time) # [2.17364597 1.85449409 2.2716279  2.05616307 2.483567   2.94070888 2.18178201 1.59249997 1.40714502 1.19133902]
+    print(np.mean(trainPerf), np.std(trainPerf)) # (95.625, 7.421463804398698)
+    print(np.mean(testPerf), np.std(testPerf)) # (98.125, 2.8641098093474)
+    print(np.mean(Time), np.std(Time)) # (2.015297293663025, 0.49489409397464507)
+        
+    # plt.figure()
+    # plt.plot(erEp )
+    # plt.ylabel('error')  
+    # plt.savefig('out.png')
+
+if __name__ == "__main__":
+    run_sgd(instance='creditScreening', hidden=22, is_n_bit=False)

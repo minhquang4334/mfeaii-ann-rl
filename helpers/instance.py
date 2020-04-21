@@ -1,6 +1,6 @@
 import numpy as np 
 from experiment import *
-from visualize import *
+from .visualize import *
 config = get_config('config.yaml')
 conn = create_connection(config['database'])
 cur = conn.cursor()

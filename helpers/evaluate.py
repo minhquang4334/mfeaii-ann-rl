@@ -1,7 +1,7 @@
 import numpy as np 
 from experiment import *
-from helpers import *
-from instance import * 
+from .helpers import *
+from .instance import * 
 
 def evaluate_EA():
     list_instances = get_list_instance_name()

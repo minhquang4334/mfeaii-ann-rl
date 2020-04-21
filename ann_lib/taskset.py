@@ -22,6 +22,20 @@ class Taskset:
         num_hidden_max = max(self.config['hiddens'])
         return (num_input + 1) * num_hidden_max + num_hidden_max + 1
 
+    # @property
+    # def array_dimensions(self):
+    #     num_input = self.config['input']
+    #     dimensions = [((num_input + 1) * h + h + 1) for h in self.config['hiddens']]
+
+    #     return dimensions
+    
+    # @property
+    # def topo(self):
+    #     num_input = self.config['input']
+    #     shape = [[num_input, h, 1] for h in self.config['hiddens']]
+
+    #     return shape
+
     def decode(self, solution, sf):
         num_input = self.config['input']
         num_hidden = self.config['hiddens'][sf]

@@ -6,12 +6,12 @@ ea:
     pswap: 0.5
     dimension: 50
     rmp: 0.3
-    repeat: 10
+    repeat: 1
 database:
     host: localhost
     user: root
     password: quang4334
-    db: mfea_2
+    db: test_mfea
     verbose: false
     method:
         name: VARCHAR(255)
@@ -19,7 +19,7 @@ sgd:
     learning_rate: 0.1
     mRate: 0.01
     num_epoch: 3000
-    repeat: 10
+    repeat: 2
     max_eval: 200000
     train_dropout: 0.2
     test_dropout: 0.4
