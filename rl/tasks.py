@@ -5,10 +5,10 @@ class Sphere:
     def __init__(self, dim):
         self.dim = dim
 
-    def fitness(self, x):
+    def evaluate(self, x):
         return np.sum(np.power(x, 2))
 
-from environments import CartPoleEnv
+from .environments import CartPoleEnv, AcrobotEnv
 
 class CartPole:
 
@@ -26,7 +26,7 @@ class CartPole:
         b = x[4]
         return int(self.sigmoid(np.sum(observation * w) + b) > 0.5)
 
-    def fitness(self, x): # Su dung ket qua best result sau khi hoc trong thuat toan tien hoa de su dung demo
+    def evaluate(self, x): # Su dung ket qua best result sau khi hoc trong thuat toan tien hoa de su dung demo
         fitness = 0
         observation = self.env.reset()
         for t in range(200):
@@ -39,8 +39,6 @@ class CartPole:
 
     def __del__(self):
         self.env.close()
-
-from environments import AcrobotEnv
 
 class Acrobot:
 
@@ -58,7 +56,7 @@ class Acrobot:
         b = x[6]
         return int(self.sigmoid(np.sum(observation * w) + b) > 0.5)
 
-    def fitness(self, x):
+    def evaluate(self, x):
         fitness = 0
         observation = self.env.reset()
         for t in range(200):
@@ -81,7 +79,7 @@ class FlappyBird:
     def __init__(self, gravity):
         self.dim = 9
         self.game = FlappyBirdEnv()
-        self.env = PLE(self.game, fps=30, display_screen=False)
+        self.env = PLE(self.game, fps=30, display_screen=False, force_fps=True)
         self.game.player.GRAVITY = gravity
         self.allowed_actions = self.env.getActionSet()
 
@@ -111,7 +109,7 @@ class FlappyBird:
             ])
         return state
 
-    def fitness(self, x):
+    def evaluate(self, x):
         p = self.env
         fitness = 0
         p.init()
@@ -123,6 +121,8 @@ class FlappyBird:
             state = self.preprocess(observation)
             action = self.action(state, x)
             reward = p.act(action)
+            # if(reward > 0):
+            #     print(reward, self.env.score())
             fitness += reward
         return - fitness
 
