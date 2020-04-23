@@ -24,6 +24,14 @@ for instance in instances:
     for hidden in instance_data['hiddens']:
         add_instance(conn, database_config, instance, '{}-hidden'.format(hidden))
 
+from rl import *
+rl_task_config = config['rl']['tasks']
+for t in rl_task_config:
+    task = rl_task_config[t]
+    for i in range(task['n_task']):
+        add_instance(conn, database_config, task['name'], '{}__{}'
+        .format(param(task['init'], task['alpha'], i), task['unit']))
+
 for method in methods:
     add_method(conn, database_config, name=method)
 

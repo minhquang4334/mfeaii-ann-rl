@@ -1,20 +1,13 @@
 ea:    
-    pop_size: 90
+    pop_size: 60
     num_iter: 1000
-    sbxdi: 2
-    pmdi: 5
+    sbxdi: 5
+    pmdi: 10
     pswap: 0.5
     dimension: 50
     rmp: 0.3
     repeat: 1
-database:
-    host: localhost
-    user: root
-    password: quang4334
-    db: test_mfea
-    verbose: false
-    method:
-        name: VARCHAR(255)
+
 sgd:
     learning_rate: 0.1
     mRate: 0.01
@@ -26,3 +19,29 @@ sgd:
     useStocasticGD: 1 # 0 for vanilla BP. 1 for Stocastic BP
     useVanilla: 1 # 1 for Vanilla Gradient Descent, 0 for Gradient Descent with momentum (either regular momentum or nesterov momen)
     useNestmomen: 0 # 0 for regular momentum, 1 for Nesterov momentum
+
+database:
+    host: localhost
+    user: root
+    password: quang4334
+    db: test_mfea
+    verbose: false
+    method:
+        name: VARCHAR(255)
+
+rl:
+    pop_size: 20
+    num_iter: 100
+    sbxdi: 2
+    pmdi: 5
+    pswap: 0.5
+    dimension: 50
+    rmp: 0.3
+    repeat: 1
+    tasks:       
+        FlappyBird: 
+            name: FlappyBird
+            init: 0.8
+            alpha: 1
+            unit: 'gravity'
+            n_task: 5

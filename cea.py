@@ -1,10 +1,16 @@
 from mfea_ii_lib import *
 
-def cea(taskset, config, callback=None):
+def cea(taskset, config, callback=None, problem="mfea-ann"):
     # unpacking hyper-parameters
-    K = len(taskset.config['hiddens'])
-    N = config['pop_size'] * K
-    D = taskset.D_multitask
+    if(problem == "mfea-ann"):
+        K = len(taskset.config['hiddens'])
+        N = config['pop_size'] * K
+        D = taskset.D_multitask
+    if(problem == "mfea-rl"):
+        K = len(taskset)
+        N = config['pop_size'] * K
+        D = max([task.dim for task in taskset])
+
     T = config['num_iter']
     sbxdi = config['sbxdi']
     pmdi = config['pmdi']
@@ -19,7 +25,10 @@ def cea(taskset, config, callback=None):
     # evaluate
     for i in range(2 * N):
         sf = skill_factor[i]
-        factorial_cost[i, sf] = taskset.evaluate(population[i], sf)
+        if(problem == "mfea-ann"):
+            factorial_cost[i, sf] = taskset.evaluate(population[i], sf)
+        if(problem == "mfea-rl"):
+            factorial_cost[i, sf] = taskset[sf].evaluate(population[i])
     scalar_fitness = calculate_scalar_fitness(factorial_cost)
 
     # sort
@@ -57,7 +66,10 @@ def cea(taskset, config, callback=None):
         # evaluate
         for i in range(N, 2 * N):
             sf = skill_factor[i]
-            factorial_cost[i, sf] = taskset.evaluate(population[i], sf)
+            if(problem == "mfea-ann"):
+                factorial_cost[i, sf] = taskset.evaluate(population[i], sf)
+            if(problem == "mfea-rl"):
+                factorial_cost[i, sf] = taskset[sf].evaluate(population[i])
         scalar_fitness = calculate_scalar_fitness(factorial_cost)
 
         # sort
@@ -83,5 +95,5 @@ def cea(taskset, config, callback=None):
             callback(result)
 
         desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join(
-            '{:0.6f}'.format(res.fun) for res in result), message)
+            '{:0.4f}'.format(res.fun) for res in result), message)
         iterator.set_description(desc)
