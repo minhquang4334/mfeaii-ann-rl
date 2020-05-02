@@ -76,8 +76,8 @@ class Model:
     self.std         = std
     self.num_sample  = num_sample
 
-  def density(self, subpop):
-    N, D = subpop.shape # Trong code gốc math lab thì ko dung D mà dùng số chiều thực của task -> D là số chiều multi task
+  def density(self, subpop, D):
+    N = subpop.shape[0] # Trong code gốc math lab thì ko dung D mà dùng số chiều thực của task -> D là số chiều multi task
     prob = np.ones([N])
     for d in range(D):
       prob *= norm.pdf(subpop[:, d], loc=self.mean[d], scale=self.std[d])
@@ -95,9 +95,8 @@ def log_likelihood(rmp, prob_matrix, K):
     value = value + np.sum(-np.log(np.sum(posterior_matrix[k], axis=1)))
   return value
 
-def learn_models(subpops):
+def learn_models(subpops, D):
   K = len(subpops)
-  D = subpops[0].shape[1]
   models = []
   for k in range(K):
     subpop            = subpops[k]
@@ -109,19 +108,22 @@ def learn_models(subpops):
     models.append(Model(mean, std, num_sample))
   return models
 
-def learn_rmp(subpops, D):
+def learn_rmp(subpops, dims):
   K          = len(subpops)
   rmp_matrix = np.eye(K)
-  models = learn_models(subpops)
+  D_max = max(dims)
+  models = learn_models(subpops, D_max)
+  
 
   for k in range(K-1):
     for j in range(k + 1, K):
+      D_min = min([dims[k], dims[j]])
       probmatrix = [np.ones([models[k].num_sample, 2]), 
                     np.ones([models[j].num_sample, 2])]
-      probmatrix[0][:, 0] = models[k].density(subpops[k])
-      probmatrix[0][:, 1] = models[j].density(subpops[k])
-      probmatrix[1][:, 0] = models[k].density(subpops[j])
-      probmatrix[1][:, 1] = models[j].density(subpops[j])
+      probmatrix[0][:, 0] = models[k].density(subpops[k], D_min)
+      probmatrix[0][:, 1] = models[j].density(subpops[k], D_min)
+      probmatrix[1][:, 0] = models[k].density(subpops[j], D_min)
+      probmatrix[1][:, 1] = models[j].density(subpops[j], D_min)
 
       rmp = fminbound(lambda rmp: log_likelihood(rmp, probmatrix, K), 0, 1)
       # rmp += np.random.randn() * 0.01

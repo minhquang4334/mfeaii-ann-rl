@@ -6,6 +6,8 @@ def mfeaii(taskset, config, callback=None, problem="mfea-ann"):
         K = len(taskset.config['hiddens'])
         N = config['pop_size'] * K
         D = taskset.D_multitask
+        dims = taskset.dims
+        print (dims)
     if(problem == "mfea-rl"):
         K = len(taskset)
         N = config['pop_size'] * K
@@ -52,7 +54,11 @@ def mfeaii(taskset, config, callback=None, problem="mfea-ann"):
 
         # learn rmp
         subpops    = get_subpops(population, skill_factor, N)
-        rmp_matrix = learn_rmp(subpops, D)
+        if(problem == "mfea-ann"):
+            # subpops = taskset.decode_pop_to_task_size(subpops)
+            rmp_matrix = learn_rmp(subpops, [D] * 3)
+        if(problem == "mfea-rl"):
+            rmp_matrix = learn_rmp(subpops, [D])
 
         # select pair to crossover
         for i in range(0, N, 2):

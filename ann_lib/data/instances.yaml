@@ -1,13 +1,11 @@
-
-
 nbit_8_1:
     name: generateNbitDataSet
     path: 8
     input: 8
     hiddens:
-        - 5
-        - 6
-        - 7
+        - [2]
+        - [3]
+        - [2]
     output: 1
 
 nbit_8_2:
@@ -15,9 +13,9 @@ nbit_8_2:
     path: 8
     input: 8
     hiddens:
-        - 7
-        - 8
-        - 9
+        - [7]
+        - [8]
+        - [9]
     output: 1
 
 nbit_8_3:
@@ -25,9 +23,9 @@ nbit_8_3:
     path: 8
     input: 8
     hiddens:
-        - 8
-        - 9
-        - 10
+        - [8]
+        - [9]
+        - [10]
     output: 1
 
 ionosphere:
@@ -35,9 +33,9 @@ ionosphere:
     path: data/ionosphere/ionosphere.data
     input: 34
     hiddens:
-        - 6
-        - 8
-        - 10
+        - [6]
+        - [8]
+        - [10]
     output: 1
 
 ticTacToe:
@@ -45,9 +43,9 @@ ticTacToe:
     path: ann_lib/data/tic-tac-toe/tic-tac-toe.data
     input: 9
     hiddens:
-        - 20
-        - 22
-        - 24
+        - [20]
+        - [22]
+        - [24]
     output: 1
 
 creditScreening:
@@ -55,9 +53,9 @@ creditScreening:
     path: ann_lib/data/credit-screening/crx.data
     input: 14
     hiddens:
-        - 18
-        - 20
-        - 22
+        - [18]
+        - [20]
+        - [22]
     output: 1
 
 breastCancer:
@@ -65,7 +63,7 @@ breastCancer:
     path: ann_lib/data/breast-cancer-wisconsin/breast-cancer-wisconsin.data
     input: 9
     hiddens:
-        - 4
-        - 6
-        - 8
+        - [4]
+        - [6]
+        - [8]
     output: 1

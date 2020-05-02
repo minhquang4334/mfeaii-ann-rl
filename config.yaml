@@ -1,6 +1,6 @@
 ea:    
     pop_size: 60
-    num_iter: 1000
+    num_iter: 100
     sbxdi: 5
     pmdi: 10
     pswap: 0.5
