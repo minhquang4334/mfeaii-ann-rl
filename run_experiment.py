@@ -21,7 +21,7 @@ def mfea_ann():
     for seed in range(local_config['repeat']):
         for instance in instances:
             print(instance)
-            taskset = create_taskset(instance)
+            taskset = create_general_taskset(instance)
             for method in methods:
                 results = []
                 methods[method](taskset, local_config, callback=results.append)
@@ -29,7 +29,7 @@ def mfea_ann():
                 method_id = get_method_id(conn, db, name=method)
                 instance_data = instances[instance]
                 for k, hidden in enumerate(instance_data['hiddens']):
-                    instance_id = get_instance_id(conn, db, instance, '{}-hidden'.format(hidden))
+                    instance_id = get_instance_id(conn, db, instance, '{}-hidden'.format(' '.join('{}-'.format(h) for h in hidden)))
                     for result in results:
                         kwargs = {'method_id': method_id,
                                 'instance_id': instance_id,
