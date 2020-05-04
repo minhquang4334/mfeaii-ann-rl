@@ -127,7 +127,7 @@ def learn_rmp(subpops, dims):
 
       rmp = fminbound(lambda rmp: log_likelihood(rmp, probmatrix, K), 0, 1)
       # rmp += np.random.randn() * 0.01
-      rmp += np.random.randn() * 0.02
+      rmp += np.random.randn() * 0.01
       rmp = np.clip(rmp, 0, 1)
       rmp_matrix[k, j] = rmp
       rmp_matrix[j, k] = rmp

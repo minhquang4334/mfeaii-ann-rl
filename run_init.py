@@ -22,7 +22,7 @@ alter_method(conn, database_config)
 for instance in instances:
     instance_data = instances[instance]
     for hidden in instance_data['hiddens']:
-        add_instance(conn, database_config, instance, '{}-hidden'.format(' '.join('{}-'.format(h) for h in hidden)))
+        add_instance(conn, database_config, instance, '{}hidden'.format(' '.join('{}-'.format(h) for h in hidden)))
 
 from rl import *
 rl_task_config = config['rl']['tasks']
