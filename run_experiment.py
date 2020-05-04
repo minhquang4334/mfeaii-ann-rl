@@ -8,7 +8,7 @@ from fnn import *
 from helpers import *
 
 instances = get_config('ann_lib/data/instances.yaml')
-methods = {'cea': cea, 'mfea': mfea, 'mfeaii': mfeaii}
+methods = {'mfeaii': mfeaii}
 sgd_method = {'sgd': ''}
 # methods = {'mfeaii': mfeaii}
 
@@ -29,7 +29,7 @@ def mfea_ann():
                 method_id = get_method_id(conn, db, name=method)
                 instance_data = instances[instance]
                 for k, hidden in enumerate(instance_data['hiddens']):
-                    instance_id = get_instance_id(conn, db, instance, '{}-hidden'.format(' '.join('{}-'.format(h) for h in hidden)))
+                    instance_id = get_instance_id(conn, db, instance, '{}hidden'.format(' '.join('{}-'.format(h) for h in hidden)))
                     for result in results:
                         kwargs = {'method_id': method_id,
                                 'instance_id': instance_id,

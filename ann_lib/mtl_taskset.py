@@ -111,33 +111,7 @@ class mtlTaskset:
                 sum = sum + self.H_task[idx][i] * self.H_task[idx][i + 1] + self.H_task[idx][i + 1]
             d.append(sum)
         return d
-
-    def indirect_decode(self, solution, sf):
-        num_input = self.config['input']
-        num_hidden = self.config['hiddens'][sf]
-        num_hidden_max = max(self.config['hiddens'])
-        assert len(solution) == self.D_multitask
-        start = 0
-        end = start + num_input * num_hidden_max
-        w1 = solution[start:end].reshape(num_input, num_hidden_max)[:, :num_hidden]
-        w1 = w1 * 10 - 5
-
-        start = end
-        end = start + num_hidden_max
-        b1 = solution[start:end][:num_hidden]
-        b1 = b1 * 10 - 5
-
-        start = end
-        end = start + num_hidden_max
-        w2 = solution[start:end].reshape(num_hidden_max, 1)[:num_hidden, :]
-        w2 = w2 * 10 - 5
-
-        start = end
-        end = start + 1
-        b2 = solution[start:end]
-        b2 = b2 * 10 - 5
-        return w1, b1, w2, b2
-
+        
     def evaluate(self, solution, sf):
         '''
         Params

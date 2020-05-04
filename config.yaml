@@ -1,19 +1,19 @@
 ea:    
     pop_size: 60
-    num_iter: 100
+    num_iter: 1000
     sbxdi: 5
-    pmdi: 10
+    pmdi: 8
     pswap: 0.5
     dimension: 50
     rmp: 0.3
-    repeat: 1
+    repeat: 20
 
 sgd:
     learning_rate: 0.1
     mRate: 0.01
     num_epoch: 3000
-    repeat: 2
-    max_eval: 200000
+    repeat: 10
+    max_eval: 150000
     train_dropout: 0.2
     test_dropout: 0.4
     useStocasticGD: 1 # 0 for vanilla BP. 1 for Stocastic BP

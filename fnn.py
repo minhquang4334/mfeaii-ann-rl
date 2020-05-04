@@ -125,6 +125,7 @@ class Network:
         self.BestW2 = self.W2
         self.BestB1 = self.B1
         self.BestB2 = self.B2  
+        return [self.BestW1, self.BestW2, self.BestB1, self.BestB2]
     
     def saveResult(self, best_solution, mse, msg, num_iters, num_samples):
         result = OptimizeResult()
@@ -176,7 +177,7 @@ class Network:
                (x,bestTrain) = self.TestNetwork(self.TrainData, self.NumSamples, 0.2)
             
             num_eval = self.NumSamples * (epoch + 1)
-            result = self.saveResult(best_solution=x, mse=mse, msg=0, num_iters=epoch, num_samples=self.NumSamples)
+            result = self.saveResult(best_solution=self.saveKnowledge(), mse=mse, msg=0, num_iters=epoch, num_samples=self.NumSamples)
             results.append(result)
             Er = np.append(Er, mse)
             epoch=epoch+1  
@@ -207,16 +208,17 @@ conn = create_connection(db)
 
 def run_sgd(instance, hidden=10, is_n_bit=False):
     # get config
+    print(instance)
     sgd_method_id = get_method_from_name('sgd')
     local_config = config['sgd']
 
     # Create Task Set
-    taskset = create_taskset(instance)
+    taskset = create_taskset(instance)    
     if(is_n_bit):
         taskset.X, taskset.y = taskset.X[0:64, :], taskset.y[0:64, :] # if n-bit problem
     print (taskset.X.shape, taskset.y.shape)
     X_train, X_test, y_train, y_test = train_test_split(
-    taskset.X, taskset.y, test_size=0.25, random_state=42)
+    taskset.X, taskset.y, test_size=0.3, random_state=42)
     TrainData = np.concatenate((X_train, y_train), axis=1)
     TestData = np.concatenate((X_test, y_test), axis=1)
     
@@ -232,7 +234,7 @@ def run_sgd(instance, hidden=10, is_n_bit=False):
     MaxRun = local_config['repeat']
     trainPerf, testPerf, trainMSE, testMSE, Epochs, Time = tuple(np.repeat([np.zeros(MaxRun)], 6, axis=0))
 
-    print (TrainData.shape, TestData.shape, Input, Output, TrSamples, TestSize, Topo)
+    # print (TrainData.shape, TestData.shape, Input, Output, TrSamples, TestSize, Topo)
     for run in range(0, MaxRun):
         results = {}
         print (run)
@@ -243,7 +245,7 @@ def run_sgd(instance, hidden=10, is_n_bit=False):
         Time[run]  =time.time() - start_time
         (testMSE[run], testPerf[run]) = fnnSGD.TestNetwork(TestData, TestSize, local_config['test_dropout'])
         # Save result
-        instance_id = get_instance_id(conn, db, instance, '{}-hidden'.format(hidden))
+        instance_id = get_instance_id(conn, db, instance, '{}hidden'.format(' '.join('{}-'.format(h) for h in [hidden])))
         for result in results:
             kwargs = {  'method_id': sgd_method_id,
                         'instance_id': instance_id,
@@ -273,4 +275,9 @@ def run_sgd(instance, hidden=10, is_n_bit=False):
     # plt.savefig('out.png')
 
 if __name__ == "__main__":
+    run_sgd(instance='ionosphere', hidden=10, is_n_bit=False)
+    run_sgd(instance='ticTacToe', hidden=24, is_n_bit=False)
     run_sgd(instance='creditScreening', hidden=22, is_n_bit=False)
+    run_sgd(instance='breastCancer', hidden=8, is_n_bit=False)
+    
+    
