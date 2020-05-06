@@ -1,14 +1,16 @@
 import numpy as np 
 from experiment import *
 from .visualize import *
-config = get_config('config.yaml')
+config = get_config('./config.yaml')
+config_db = config['database']
+config_ea = config['ea']
 conn = create_connection(config['database'])
 cur = conn.cursor()
 # cur.execute('ALTER TABLE iteration ADD COLUMN rmp VARCHAR(128);')
 
 class Instance:
     def __init__(self, config, instance_name):
-        self.conn = create_connection(config)
+        self.conn = create_connection(config_db)
         self.cur = conn.cursor()
         self.instance_name = instance_name 
         
@@ -32,12 +34,13 @@ class Instance:
         return tuple(results)
 
     def best_results(self):
-        max_iter = config['num_iter'] - 1
+        max_iter = config_ea['num_iter'] - 1
         query = 'SELECT instance_id, method_id, best, seed from iteration where instance_id in {} And method_id in {} and num_iteration={}'.format(self.instances_id, self.methods_id, max_iter)
         cur.execute(query)
         re = cur.fetchall()
         # print (re, self.instances_id, self.methods_id)
         results = []
+        print(self.instances_id, self.methods_id)
         for idx in self.instances_id:
             for idy in self.methods_id:
                 total = 0

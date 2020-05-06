@@ -1,5 +1,4 @@
 import numpy as np 
-from experiment import *
 from .helpers import *
 from .instance import * 
 
