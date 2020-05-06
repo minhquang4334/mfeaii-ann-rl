@@ -1,6 +1,7 @@
 import numpy as np 
+from mfea_ii_lib import *
 from experiment import *
-config = get_config('config.yaml')
+config = get_config('./config.yaml')
 conn = create_connection(config['database'])
 cur = conn.cursor()
 # cur.execute('ALTER TABLE iteration ADD COLUMN rmp VARCHAR(128);')

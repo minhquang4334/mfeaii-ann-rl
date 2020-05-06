@@ -115,7 +115,8 @@ def mfea(taskset, config, callback=None, problem="mfea-ann"):
             message)
         if callback:
             callback(result)
-
-        desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join(
-            '{:0.4f}'.format(res.fun) for res in result), message)
-        iterator.set_description(desc)
+            
+        if(config['is_test']):
+            desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join(
+                '{:0.4f}'.format(res.fun) for res in result), message)
+            iterator.set_description(desc)

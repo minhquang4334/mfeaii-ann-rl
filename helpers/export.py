@@ -40,3 +40,6 @@ def result_to_string():
         results.append(result)
         print(ins, result)
     export_result(results)
+
+if __name__ == "__main__":
+    pass
