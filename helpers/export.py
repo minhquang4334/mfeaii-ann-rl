@@ -1,7 +1,7 @@
 from .helpers import *
 from .instance import *
 
-def export_result(instances):
+def export_result(instances, list_instances):
     ''' print template
     CEA (4,5,6) & $0.0331 \pm 0.0091 $& $0.0166 \pm 0.0097$ & $\mathbf{0.0058 \pm 0.0012}$ \\ 
     MFEA (4,5,6) & $0.0268 \pm 0.0078$ & $\mathbf{0.0116 \pm 0.0034}$ & $0.0068 \pm 0.0016$ \\ 
@@ -16,30 +16,38 @@ def export_result(instances):
     for instance in instances:
         result = group_result_by_index(instance, 1, K)
         results.append(result)
-
+    i = 0
     for re in results:
         item_template = '& ${} \\pm {}$ '
         item_bold_template = ' & $\\mathbf {} \\pm {}$ '
+        idx = 0
         for tmp in re:
             index = 0
-            text = ''
+            if(idx == 0): text = list_instances[i] + ' CEA '
+            if(idx == 1): text = list_instances[i] + ' MFEA-I '
+            if(idx == 2): text = list_instances[i] + ' MFEA-II '
             for item in tmp:
                 text += item_template.format(item[2], item[3])
                 index += 1
-            text += '\\\\ \n'
+            text += '\\\\'
+            if(idx == 2): text += '\\hline\n'
             texts += text
             print (text)
-    return text
+
+            idx = idx + 1
+        i+=1
+    return texts
 
 def result_to_string():
     list_instances = get_list_instance_name()
     results = []
+    names = []
     for ins in list_instances:
         instance = Instance(config, ins)
         result = instance.best_results()
         results.append(result)
         print(ins, result)
-    export_result(results)
+    export_result(results, list_instances)
 
 if __name__ == "__main__":
     pass

@@ -4,7 +4,10 @@ from mfea import *
 from mfeaii import *
 from experiment import *
 
-instances = get_config('ann_lib/data/instances.yaml')
+# instances = get_config('ann_lib/data/instances.yaml')
+# instances = get_config('ann_lib/data/same_topo_instance.yaml')
+instances = get_config('ann_lib/data/mtl_instances.yaml')
+
 methods = {'cea': cea, 'mfea': mfea, 'mfeaii': mfeaii, 'sgd': ''}
 
 config = get_config('config.yaml')

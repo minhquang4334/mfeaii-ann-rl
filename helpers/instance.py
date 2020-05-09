@@ -35,7 +35,7 @@ class Instance:
 
     def best_results(self):
         max_iter = config_ea['num_iter'] - 1
-        query = 'SELECT instance_id, method_id, best, seed from iteration where instance_id in {} And method_id in {} and num_iteration={}'.format(self.instances_id, self.methods_id, max_iter)
+        query = 'SELECT instance_id, method_id, best, seed from iteration where instance_id in {} And method_id in {} and num_iteration={} order by instance_id'.format(self.instances_id, self.methods_id, max_iter)
         cur.execute(query)
         re = cur.fetchall()
         # print (re, self.instances_id, self.methods_id)
@@ -52,7 +52,7 @@ class Instance:
                         number_idx += 1
                         el.append(tmp[2])
                 el = np.asarray(el)
-                std = round(np.std(el), 4)           
+                std = round(np.std(el), 6)           
                 avg = round(total/number_idx, 4)
                 results.append([idx, idy, avg, std])
                 
@@ -75,7 +75,6 @@ class Instance:
         cur.execute(query)
         re = cur.fetchall()
         # print (re, self.instances_id, self.methods_id)
-                
         return re
     
     def results_rmp(self, method_id):
@@ -87,4 +86,4 @@ class Instance:
         return re
 
 if __name__ == '__main__':
-    print(get_method_from_name('sgd'))
+    pass

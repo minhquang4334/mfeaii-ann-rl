@@ -21,14 +21,14 @@ def convergence_train(instance):
     # conn = create_connection(config)
     # cur = conn.cursor()
     # cur.execute('SELECT TABLE iteration ADD COLUMN rmp VARCHAR(128);')
-
-    results1 = instance[0]
-    results2 = instance[1]
-    results3 = instance[2]
     
-    fig, axes = plt.subplots(1, 2)
+    fig, axes = plt.subplots(1, 3)
     axes = axes.flatten()
-    for k in range(1):
+    for k in range(3):
+        results1 = instance[k][0]
+        results2 = instance[k][1]
+        results3 = instance[k][2]
+        print(results1.shape, results2.shape, results3.shape)
         ax = axes[k]
 
         # CEA
@@ -39,7 +39,7 @@ def convergence_train(instance):
         x = np.arange(result.shape[1])
 
         line1, = ax.plot(x, mu, color = "blue")
-        ax.fill_between(x, mu + sigma, mu - sigma, color = "blue", alpha = 0.3)
+        ax.fill_between(x, mu + 0, mu - 0, color = "blue", alpha = 0.3)
 
         # MFEA
         # result = results2[:, :, k]
@@ -50,7 +50,7 @@ def convergence_train(instance):
         x = np.arange(result.shape[1])
 
         line2, = ax.plot(x, mu, color = "red")
-        ax.fill_between(x, mu + sigma, mu - sigma, color = "red", alpha = 0.3)
+        ax.fill_between(x, mu + 0, mu - 0, color = "red", alpha = 0.3)
 
         # MFEA2
         # result = results2[:, :, k]
@@ -61,7 +61,7 @@ def convergence_train(instance):
         x = np.arange(result.shape[1])
 
         line3, = ax.plot(x, mu, color = "green")
-        ax.fill_between(x, mu + sigma, mu - sigma, color = "green", alpha = 0.3)
+        ax.fill_between(x, mu + 0, mu - 0, color = "green", alpha = 0.3)
 
         # Legend
         ax.grid()
@@ -76,28 +76,45 @@ def convergence(instance, instances_name, X_Range):
     # cur = conn.cursor()
     # cur.execute('SELECT TABLE iteration ADD COLUMN rmp VARCHAR(128);')
     
-    fig, axes = plt.subplots()
+    fig, axes = plt.subplots(1, 2)
     index = 0
     line = []
-    ax = axes
-    for result in instance:
-        result = np.asarray(result)
-        mu = np.mean(result, axis = 0)
-        mu = mu[:, 0].flatten()
-        sigma = np.std(result, axis = 0)
-        sigma = sigma[:, 0].flatten()
-        x = X_Range[index]
-        x = np.squeeze(x, axis=0)
-        print (mu.shape, x.shape)
-        line1, = ax.plot(x, mu, color = color[index])
-        ax.fill_between(x, mu + sigma, mu - sigma, color = color[index], alpha = 0.3)
-        line.append(line1)
-        index +=1
+    p1 = (instance[0], instance[1], instance[2])
+    p2 = (instance[3], instance[4], instance[5])
+    instances1 = (instances_name[0], instances_name[1], instances_name[2])
+    instances2 = (instances_name[3], instances_name[4], instances_name[5])
+    for i in range(2):
+        ax = axes[i]
+        if(i == 0): 
+            p = p1
+            i_name = instances1
+        else: 
+            p = p2
+            i_name = instances2
+
+        for result in p:
+            print (result.shape, index)
+            result = np.asarray(result).astype(np.float)
+            mu = np.mean(result, axis = 0)
+            print (mu.shape)
+            mu = mu.flatten()
+            sigma = np.std(result, axis = 0)
+            sigma = sigma.flatten()
+            x = X_Range[index]
+            x = np.squeeze(x, axis=0)
+            print (mu.shape, x.shape)
+            line1, = ax.plot(x, mu, color = color[index])
+            ax.fill_between(x, mu + 0, mu - 0, color = color[index], alpha = 0.3)
+            line.append(line1)
+            if(index == 2):
+                index = 0
+            else:
+                index = index + 1
+            ax.grid()
+            ax.legend(tuple(line), tuple(i_name))
         # Legend
 
-    ax.grid()
-    ax.legend(tuple(line), tuple(instances_name))
-    plt.title("Compare MFEAII and SGD")
+   
     plt.show()
     plt.savefig("mean_and_std_sgd.eps", format = "eps")    
 

@@ -159,6 +159,35 @@ def generateNbitDataSet(N):
     return X.astype(int), Y.astype(int)
     pass
 
+def generateNbitOddDataSet(N):
+    dim = [int(2 ** int(N)), int(N)] # 2^N x N
+    sample = np.random.rand(dim[0], dim[1]) # 2N x N
+    X = np.zeros(dim, dtype=bool) # 2N x N
+    Y = np.empty([1, dim[0]], dtype=bool) # 1 x 2N
+
+    for i in range(0, len(X)):
+        increment(X[i], i + 1)
+        # print(X[i].astype(float))
+
+    # X = X.T
+
+    np.random.shuffle(X)
+    X = X.T # N x 2N
+    for j in range(0, dim[0]):
+        count = np.count_nonzero(X[::1, j])
+        # print(count)
+        if count % 2 == 0:
+            Y[0][j] = 1 # 0
+        else:
+            Y[0][j] = 0 # 1
+    # print('X')
+    # print(X.astype(float))
+    # print('Y')
+    # print(Y.astype(float))
+    X, Y = X.T, Y.T
+    return X.astype(int), Y.astype(int)
+    pass
+
 def increment(X, times):
     cur_times = 0
     while cur_times != times:
@@ -170,7 +199,8 @@ def increment(X, times):
             X[i] = 1
         cur_times += 1
 
-mapping = {'ionosphere':ionosphere, 'ticTacToe': ticTacToe, 'creditScreening' : creditScreening, 'breastCancer' : breastCancer, 'generateNbitDataSet' : generateNbitDataSet}
+mapping = {'ionosphere':ionosphere, 'ticTacToe': ticTacToe, 'creditScreening' : creditScreening, 
+'breastCancer' : breastCancer, 'generateNbitDataSet' : generateNbitDataSet, 'generateNbitOddDataSet': generateNbitOddDataSet}
 
 if __name__ == '__main__':
     input, out  = generateNbitDataSet(8)
