@@ -1,13 +1,13 @@
 ea:    
-    pop_size: 50
+    pop_size: 30
     num_iter: 1000
-    sbxdi: 5
-    pmdi: 10
+    sbxdi: 15
+    pmdi: 15
     pswap: 0.5
     dimension: 50
     rmp: 0.3
-    repeat: 1
-    is_test: False
+    repeat: 2
+    is_test: True
 
 sgd:
     learning_rate: 0.1
@@ -25,7 +25,7 @@ database:
     host: localhost
     user: root
     password: quang4334
-    db: mfea
+    db: thesis_test
     verbose: false
     method:
         name: VARCHAR(255)

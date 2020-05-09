@@ -1,0 +1,75 @@
+
+nbit_4_3:
+    name: [generateNbitDataSet, generateNbitOddDataSet]
+    path: 4
+    input: 4
+    hiddens: [4,4]
+    output: 1
+
+nbit_6_3:
+    name: [generateNbitDataSet, generateNbitOddDataSet]
+    path: 6
+    input: 6
+    hiddens: [4,4]
+    output: 1
+
+nbit_6_3:
+    name: [generateNbitDataSet, generateNbitOddDataSet]
+    path: 6
+    input: 6
+    hiddens: [6,6]
+    output: 1
+
+nbit_8_1:
+    name: [generateNbitDataSet, generateNbitOddDataSet]
+    path: 8
+    input: 8
+    hiddens: [6,6]
+    output: 1
+
+nbit_8_2:
+    name: [generateNbitDataSet, generateNbitOddDataSet]
+    path: 8
+    input: 8
+    hiddens: [8,8]
+    output: 1
+
+# ionosphere:
+#     name: ionosphere
+#     path: data/ionosphere/ionosphere.data
+#     input: 34
+#     hiddens:
+#         - 6
+#         - 8
+#         - 10
+#     output: 1
+
+# ticTacToe:
+#     name: ticTacToe
+#     path: ann_lib/data/tic-tac-toe/tic-tac-toe.data
+#     input: 9
+#     hiddens:
+#         - 20
+#         - 22
+#         - 24
+#     output: 1
+
+# creditScreening:
+#     name: creditScreening
+#     path: ann_lib/data/credit-screening/crx.data
+#     input: 14
+#     hiddens:
+#         - 18
+#         - 20
+#         - 22
+#     output: 1
+
+# breastCancer:
+#     name: breastCancer
+#     path: ann_lib/data/breast-cancer-wisconsin/breast-cancer-wisconsin.data
+#     input: 9
+#     hiddens:
+#         - 4
+#         - 6
+#         - 8
+#     output: 1

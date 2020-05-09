@@ -7,7 +7,10 @@ from experiment import *
 from fnn import *
 from helpers import *
 
-instances = get_config('ann_lib/data/instances.yaml')
+# instances = get_config('ann_lib/data/instances.yaml')
+#instances = get_config('ann_lib/data/same_topo_instance.yaml')
+instances = get_config('ann_lib/data/mtl_instances.yaml')
+
 methods = {'cea': cea, 'mfea': mfea, 'mfeaii': mfeaii}
 sgd_method = {'sgd': ''}
 # methods = {'mfeaii': mfeaii}
@@ -21,7 +24,8 @@ def mfea_ann():
     for seed in range(local_config['repeat']):
         for instance in instances:
             print(instance)
-            taskset = create_taskset(instance)
+            taskset = create_general_taskset(instance)
+            print (taskset.H_task, taskset.L_task, taskset.H_multitask, taskset.D_multitask, taskset.dims)
             for method in methods:
                 results = []
                 methods[method](taskset, local_config, callback=results.append)

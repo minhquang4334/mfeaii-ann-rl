@@ -7,7 +7,6 @@ def mfeaii(taskset, config, callback=None, problem="mfea-ann"):
         N = config['pop_size'] * K
         D = taskset.D_multitask
         dims = taskset.dims
-        print (dims)
     if(problem == "mfea-rl"):
         K = len(taskset)
         N = config['pop_size'] * K
@@ -56,7 +55,7 @@ def mfeaii(taskset, config, callback=None, problem="mfea-ann"):
         subpops    = get_subpops(population, skill_factor, N)
         if(problem == "mfea-ann"):
             # subpops = taskset.decode_pop_to_task_size(subpops)
-            rmp_matrix = learn_rmp(subpops, [D] * 3)
+            rmp_matrix = learn_rmp(subpops, [D, D, D])
         if(problem == "mfea-rl"):
             rmp_matrix = learn_rmp(subpops, [D])
 
@@ -115,11 +114,12 @@ def mfeaii(taskset, config, callback=None, problem="mfea-ann"):
         scalar_fitness = scalar_fitness[sort_index]
 
         # optimization info
-        message = {'algorithm': 'mfeaii', 'rmp':'{} - {} - {}'.format(rmp_matrix[0, 1], rmp_matrix[0, 2], rmp_matrix[1, 2])}
+        message = {'algorithm': 'mfeaii', 'rmp':'{} - {} - {}'.format(np.around(rmp_matrix[0, 1], 4), np.around(rmp_matrix[0, 2], 4), np.around(rmp_matrix[1, 2],4))}
+        # message = {'algorithm': 'mfeaii', 'rmp':'{}'.format(np.around(rmp_matrix[0, 1], 4))}
         result = get_optimization_results(t, population, factorial_cost, scalar_fitness, skill_factor, message)
         if callback:
             callback(result)
-        if(config['is_test']):
-            desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join('{:0.4f}'.format(res.fun) for res in result), message)
-            iterator.set_description(desc)
+        desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join('{:0.4f}'.format(res.fun) for res in result), message)
+        iterator.set_description(desc)
+            
 
