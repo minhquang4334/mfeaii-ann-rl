@@ -63,9 +63,8 @@ def calculate_scalar_fitness(factorial_cost):
 def get_subpops(population, skill_factor, N):
   K = len(set(skill_factor))
   subpops = []
-  skill_factor = skill_factor[:N]
   for k in range(K):
-    idx = np.where(skill_factor == k)[0]
+    idx = np.where(skill_factor[:N] == k)[0]
     subpops.append(population[idx, :])
   return subpops
 

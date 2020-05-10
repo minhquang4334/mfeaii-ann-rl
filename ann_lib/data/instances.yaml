@@ -1,24 +1,4 @@
-# nbit_4_1:
-#     name: generateNbitDataSet
-#     path: 4
-#     input: 4
-#     hiddens:
-#         - 4
-#         - 5
-#         - 6
-#     output: 1
-
-# nbit_4_2:
-#     name: generateNbitDataSet
-#     path: 4
-#     input: 4
-#     hiddens:
-#         - 5
-#         - 6
-#         - 7
-#     output: 1
-
-nbit_4_3_even:
+nbit_4_1:
     name: generateNbitDataSet
     path: 4
     input: 4
@@ -28,7 +8,38 @@ nbit_4_3_even:
         - 4
     output: 1
 
-# nbit_6_1:
+nbit_4_2:
+    name: generateNbitDataSet
+    path: 4
+    input: 4
+    hiddens:
+        - 3
+        - 4
+        - 5
+    output: 1
+
+
+nbit_6_1:
+    name: generateNbitDataSet
+    path: 6
+    input: 6
+    hiddens:
+        - 2
+        - 3
+        - 4
+    output: 1
+
+nbit_6_2:
+    name: generateNbitDataSet
+    path: 6
+    input: 6
+    hiddens:
+        - 3
+        - 4
+        - 5
+    output: 1
+
+# nbit_6_3_even:
 #     name: generateNbitDataSet
 #     path: 6
 #     input: 6
@@ -38,82 +49,72 @@ nbit_4_3_even:
 #         - 6
 #     output: 1
 
-# nbit_6_2:
-#     name: generateNbitDataSet
-#     path: 6
-#     input: 6
-#     hiddens:
-#         - 5
-#         - 6
-#         - 7
-#     output: 1
-
-nbit_6_3_even:
+nbit_8_1:
     name: generateNbitDataSet
-    path: 6
-    input: 6
+    path: 8
+    input: 8
+    hiddens:
+        - 2
+        - 3
+        - 4
+    output: 1
+
+nbit_8_2:
+    name: generateNbitDataSet
+    path: 8
+    input: 8
+    hiddens:
+        - 3
+        - 4
+        - 5
+    output: 1
+
+nbit_8_3:
+    name: generateNbitDataSet
+    path: 8
+    input: 8
     hiddens:
         - 4
         - 5
         - 6
     output: 1
 
-nbit_8_1_even:
-    name: generateNbitDataSet
-    path: 8
-    input: 8
+ionosphere:
+    name: ionosphere
+    path: data/ionosphere/ionosphere.data
+    input: 34
     hiddens:
-        - 5
         - 6
-        - 7
+        - 8
+        - 10
     output: 1
 
-nbit_8_2_even:
-    name: generateNbitDataSet
-    path: 8
-    input: 8
+ticTacToe:
+    name: ticTacToe
+    path: ann_lib/data/tic-tac-toe/tic-tac-toe.data
+    input: 9
+    hiddens:
+        - 20
+        - 22
+        - 24
+    output: 1
+
+creditScreening:
+    name: creditScreening
+    path: ann_lib/data/credit-screening/crx.data
+    input: 14
+    hiddens:
+        - 18
+        - 20
+        - 22
+    output: 1
+
+breastCancer:
+    name: breastCancer
+    path: ann_lib/data/breast-cancer-wisconsin/breast-cancer-wisconsin.data
+    input: 9
     hiddens:
         - 4
         - 6
         - 8
     output: 1
-
-# ionosphere:
-#     name: ionosphere
-#     path: data/ionosphere/ionosphere.data
-#     input: 34
-#     hiddens:
-#         - 6
-#         - 8
-#         - 10
-#     output: 1
-
-# ticTacToe:
-#     name: ticTacToe
-#     path: ann_lib/data/tic-tac-toe/tic-tac-toe.data
-#     input: 9
-#     hiddens:
-#         - 20
-#         - 22
-#         - 24
-#     output: 1
-
-# creditScreening:
-#     name: creditScreening
-#     path: ann_lib/data/credit-screening/crx.data
-#     input: 14
-#     hiddens:
-#         - 18
-#         - 20
-#         - 22
-#     output: 1
-
-# breastCancer:
-#     name: breastCancer
-#     path: ann_lib/data/breast-cancer-wisconsin/breast-cancer-wisconsin.data
-#     input: 9
-#     hiddens:
-#         - 4
-#         - 6
-#         - 8
-#     output: 1
