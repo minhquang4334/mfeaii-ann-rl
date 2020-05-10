@@ -66,14 +66,12 @@ def mfea(taskset, config, callback=None, problem="mfea-ann"):
                 c1 = mutate(c1, pmdi)
                 c2 = mutate(c2, pmdi)
                 # c1, c2 = variable_swap(c1, c2, pswap)
-                if np.random.rand() < 0.5:
+                if np.random.rand() < 0.5: 
                     skill_factor[N + i] = sf1
-                else:
-                    skill_factor[N + i] = sf2
-                if np.random.rand() < 0.5:
-                    skill_factor[N + i + 1] = sf1
-                else:
                     skill_factor[N + i + 1] = sf2
+                else: 
+                    skill_factor[N + i] = sf2
+                    skill_factor[N + i + 1] = sf1
             else:
                 p2 = find_relative(population, skill_factor, sf1, N)
                 c1, c2 = sbx_crossover(p1, p2, sbxdi)
