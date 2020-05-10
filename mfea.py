@@ -73,13 +73,22 @@ def mfea(taskset, config, callback=None, problem="mfea-ann"):
                     skill_factor[N + i] = sf2
                     skill_factor[N + i + 1] = sf1
             else:
-                p2 = find_relative(population, skill_factor, sf1, N)
-                c1, c2 = sbx_crossover(p1, p2, sbxdi)
-                c1 = mutate(c1, pmdi)
-                c2 = mutate(c2, pmdi)
-                c1, c2 = variable_swap(c1, c2, pswap)
+                p1_  = find_relative(population, skill_factor, sf1, N)
+                c, c_ = sbx_crossover(p1, p1_, sbxdi)
+                c = mutate(c, pmdi)
+                c_ = mutate(c_, pmdi)
+                c, c_ = variable_swap(c, c_, pswap)
+                c1 = c
+
+                p2_  = find_relative(population, skill_factor, sf2, N)
+                c, c_ = sbx_crossover(p2, p2_, sbxdi)
+                c = mutate(c, pmdi)
+                c_ = mutate(c_, pmdi)
+                c, c_ = variable_swap(c, c_, pswap)
+                c2 = c
+                
                 skill_factor[N + i] = sf1
-                skill_factor[N + i + 1] = sf1
+                skill_factor[N + i + 1] = sf2
 
             population[N + i, :], population[N + i + 1, :] = c1[:], c2[:]
 
