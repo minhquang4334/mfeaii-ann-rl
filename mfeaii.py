@@ -77,10 +77,12 @@ def mfeaii(taskset, config, callback=None, problem="mfea-ann"):
                 c1 = mutate(c1, pmdi)
                 c2 = mutate(c2, pmdi)
                 # c1, c2 = variable_swap(c1, c2, pswap)
-                if np.random.rand() < 0.5: skill_factor[N + i] = sf1
-                else: skill_factor[N + i] = sf2
-                if np.random.rand() < 0.5: skill_factor[N + i + 1] = sf1
-                else: skill_factor[N + i + 1] = sf2
+                if np.random.rand() < 0.5: 
+                    skill_factor[N + i] = sf1
+                    skill_factor[N + i + 1] = sf2
+                else: 
+                    skill_factor[N + i] = sf2
+                    skill_factor[N + i + 1] = sf1
             else:
                 p2  = find_relative(population, skill_factor, sf1, N)
                 c1, c2 = sbx_crossover(p1, p2, sbxdi)
@@ -101,6 +103,9 @@ def mfeaii(taskset, config, callback=None, problem="mfea-ann"):
                 factorial_cost[i, sf] = taskset[sf].evaluate(population[i])
             # factorial_cost[i, sf] = functions[sf](population[i])
         scalar_fitness = calculate_scalar_fitness(factorial_cost)
+
+        #follow by mfea2 precise: select parents and offsprings with ratio parents/offsprings = 1/2 on each task
+        # for i in range(K):
 
         # sort
         sort_index = np.argsort(scalar_fitness)[::-1]
