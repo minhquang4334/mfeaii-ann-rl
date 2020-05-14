@@ -32,17 +32,17 @@ database:
 
 rl:
     pop_size: 20
-    num_iter: 100
-    sbxdi: 2
-    pmdi: 5
+    num_iter: 5
+    sbxdi: 15
+    pmdi: 15
     pswap: 0.5
     dimension: 50
     rmp: 0.3
-    repeat: 1
+    repeat: 30
     tasks:       
         FlappyBird: 
             name: FlappyBird
-            init: 0.8
-            alpha: 1
+            init: 7.84
+            alpha: 0.98
             unit: 'gravity'
-            n_task: 5
+            n_task: 3

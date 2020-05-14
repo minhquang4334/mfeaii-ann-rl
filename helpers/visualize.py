@@ -8,6 +8,7 @@ NUMBER_OF_ALG2_TASK = 1
 ALG1 = "CEA"
 ALG2 = "MFEA"
 ALG3 = "MFEAII"
+ALG4 = "MFEAIIQ"
 problem="ionosphere"
 def load(algorithm):
     results = []
@@ -28,6 +29,7 @@ def convergence_train(instance):
         results1 = instance[k][0]
         results2 = instance[k][1]
         results3 = instance[k][2]
+        # results4 = instance[k][3]
         print(results1.shape, results2.shape, results3.shape)
         ax = axes[k]
 
@@ -62,6 +64,15 @@ def convergence_train(instance):
 
         line3, = ax.plot(x, mu, color = "green")
         ax.fill_between(x, mu + 0, mu - 0, color = "green", alpha = 0.3)
+        # mfeaiiq
+        # result = results4[:, :]
+
+        # mu = np.mean(result, axis = 0)
+        # sigma = np.std(result, axis = 0)
+        # x = np.arange(result.shape[1])
+
+        # line4, = ax.plot(x, mu, color = "black")
+        # ax.fill_between(x, mu + 0, mu - 0, color = "black", alpha = 0.3)
 
         # Legend
         ax.grid()
@@ -69,7 +80,7 @@ def convergence_train(instance):
     plt.show()
     plt.savefig("mean_and_std.eps", format = "eps")
 
-color = ['red', 'blue', 'green']
+color = ['red', 'green', 'blue']
 def convergence(instance, instances_name, X_Range):
     # config = get_config('config.yaml')
     # conn = create_connection(config)
