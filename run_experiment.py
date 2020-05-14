@@ -11,7 +11,7 @@ instances = get_config('ann_lib/data/instances.yaml')
 # instances = get_config('ann_lib/data/same_topo_instance.yaml')
 # instances = get_config('ann_lib/data/mtl_instances.yaml')
 
-methods = {'cea': cea, 'mfea': mfea, 'mfeaii': mfeaii}
+methods = {'mfeaii': mfeaii}
 sgd_method = {'sgd': ''}
 # methods = {'mfeaii': mfeaii}
 
@@ -54,13 +54,26 @@ def mfea_rl():
     # tasks = create_tasks(tasks_config['CartPole'])
     results = []
     for seed in range(local_config['repeat']):
-        for task in tasks_config:
-            print('----------{}------------'.format(tasks_config[task]['name']))
-            tasks = create_tasks(tasks_config[task])
+        for t in tasks_config:
+            task = tasks_config[t]
+            print('----------{}------------'.format(task['name']))
+            tasks = create_tasks(task)
             for method in methods:
                 methods[method](tasks, local_config, callback=results.append, problem="mfea-rl")
                 method_id = get_method_id(conn, db, name=method)
-                
+                for k in range(task['n_task']):
+                    instance_id = get_instance_id(conn, db, task['name'], '{}__{}'.format(param(task['init'], task['alpha'], k), task['unit']))
+                    for result in results:
+                        kwargs = {'method_id': method_id,
+                                'instance_id': instance_id,
+                                'best': result[k].fun,
+                                'rmp': result[k].message['rmp'],
+                                'best_solution': serialize(result[k].x),
+                                'num_iteration': result[k].nit,
+                                'num_evaluation': result[k].nfev,
+                                'seed': seed,
+                                }
+                        add_iteration(conn, db, **kwargs)
 
     # print(results[4][0], np.asarray(results).shape)
     # observation = np.array(tasks[0].env.state)
@@ -71,5 +84,5 @@ def mfea_rl():
     # tasks[0].env.close()
 
 if __name__ == "__main__":
-    mfea_ann()
+    mfea_rl()
     

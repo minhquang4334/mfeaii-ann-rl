@@ -8,7 +8,7 @@ class Sphere:
     def evaluate(self, x):
         return np.sum(np.power(x, 2))
 
-from .environments import CartPoleEnv, AcrobotEnv
+from .environments import CartPoleEnv
 
 class CartPole:
 
@@ -26,19 +26,21 @@ class CartPole:
         b = x[4]
         return int(self.sigmoid(np.sum(observation * w) + b) > 0.5)
 
-    def evaluate(self, x): # Su dung ket qua best result sau khi hoc trong thuat toan tien hoa de su dung demo
-        fitness = 0
+    def evaluate(self, x):
+        evaluate = 0
         observation = self.env.reset()
         for t in range(200):
             action = self.action(observation, x)
             observation, reward, done, info = self.env.step(action)
-            fitness += reward
+            evaluate += reward
             if done:
                 break
-        return - fitness
+        return - evaluate
 
     def __del__(self):
         self.env.close()
+
+from .environments import AcrobotEnv
 
 class Acrobot:
 
@@ -57,15 +59,15 @@ class Acrobot:
         return int(self.sigmoid(np.sum(observation * w) + b) > 0.5)
 
     def evaluate(self, x):
-        fitness = 0
+        evaluate = 0
         observation = self.env.reset()
         for t in range(200):
             action = self.action(observation, x)
             observation, reward, done, info = self.env.step(action)
-            fitness += reward
+            evaluate += reward
             if done:
                 break
-        return - fitness
+        return - evaluate
 
     def __del__(self):
         self.env.close()
@@ -79,7 +81,7 @@ class FlappyBird:
     def __init__(self, gravity):
         self.dim = 9
         self.game = FlappyBirdEnv()
-        self.env = PLE(self.game, fps=30, display_screen=False, force_fps=True)
+        self.env = PLE(self.game, fps=30, display_screen=False)
         self.game.player.GRAVITY = gravity
         self.allowed_actions = self.env.getActionSet()
 
@@ -111,7 +113,7 @@ class FlappyBird:
 
     def evaluate(self, x):
         p = self.env
-        fitness = 0
+        evaluate = 0
         p.init()
         p.reset_game()
         while 1:
@@ -121,15 +123,13 @@ class FlappyBird:
             state = self.preprocess(observation)
             action = self.action(state, x)
             reward = p.act(action)
-            # if(reward > 0):
-            #     print(reward, self.env.score())
-            fitness += reward
-        return - fitness
+            evaluate += reward
+        return - evaluate
 
 def main():
     task = CartPole(9.8)
 
-    y = task.fitness(np.random.rand(5))
+    y = task.evaluate(np.random.rand(5))
     print(y)
 
 if __name__ == '__main__':

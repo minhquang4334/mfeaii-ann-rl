@@ -94,7 +94,7 @@ def cea(taskset, config, callback=None, problem="mfea-ann"):
         if callback:
             callback(result)
 
-        if(config['is_test']):
-            desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join(
+        desc = 'gen:{} fitness:{} message:{}'.format(t, ' '.join(
                 '{:0.4f}'.format(res.fun) for res in result), message)
-            iterator.set_description(desc)
+        iterator.set_description(desc)
+            

@@ -4,7 +4,7 @@ from .instance import *
 
 def evaluate_EA():
     list_instances = get_list_instance_name()
-    instance = Instance(config, 'nbit_4_3') # task 8 bit
+    instance = Instance(config, 'nbit_10_1') # task 8 bit
     arr = np.asarray(instance.results_by_tasks)
     best_result = arr # task 8bit max
     # best_result = np.sort(best_result, axis = -1)
@@ -28,7 +28,7 @@ def evaluate_EA():
     convergence_train(results)
 
 def compare_mfea2_sgd(method_id):
-    instance = Instance(config, 'nbit_8_3') # task 8 bit
+    instance = Instance(config, 'nbit_10_1') # task 8 bit
     result_mfea2_8bit = np.asarray(instance.results_subtask(instance_id=24, method_id=3))
     result_sgd_8bit = np.asarray(instance.results_subtask(instance_id=1, method_id=method_id))
     result_mfea2_8bit = result_mfea2_8bit[result_mfea2_8bit[:, 5] <= 200000]
@@ -52,15 +52,15 @@ def compare_mfea2_sgd(method_id):
 #         i += 1
 #     return max_index
 
-def mfea2_rmp():
-    instance = Instance(config, 'nbit_4_3') # task 8 bit
-    result_mfea2_8bit = np.asarray(instance.results_rmp(method_id=3))
+def mfea2_rmp(method_id):
+    instance = Instance(config, 'nbit_10_1') # task 8 bit
+    result_mfea2_8bit = np.asarray(instance.results_rmp(method_id=method_id))
     print (result_mfea2_8bit.shape)
-    result_mfea2_8bit = group_result_by_index(re=result_mfea2_8bit, index=0, number_of_el=3, margin=1)
+    result_mfea2_8bit = group_result_by_index(re=result_mfea2_8bit, index=0, number_of_el=3, margin=4)
     print (result_mfea2_8bit.shape)
     results = []
     for ins in result_mfea2_8bit:
-        result = group_result_by_index(ins, index=5, number_of_el=15, margin=0)
+        result = group_result_by_index(ins, index=5, number_of_el=5, margin=0)
         results.append(result)
     results = np.asarray(results)[:,:,:, [2,3]]
     rmp_results = results[0, :, :, 1]
