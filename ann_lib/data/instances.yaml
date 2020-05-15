@@ -3,9 +3,9 @@ nbit_4_1:
     path: 4
     input: 4
     hiddens:
-        - 2
-        - 3
         - 4
+        - 5
+        - 6
     output: 1
 
 nbit_4_2:
@@ -13,9 +13,9 @@ nbit_4_2:
     path: 4
     input: 4
     hiddens:
-        - 3
-        - 4
         - 5
+        - 6
+        - 7
     output: 1
 
 
@@ -24,9 +24,9 @@ nbit_6_1:
     path: 6
     input: 6
     hiddens:
-        - 2
-        - 3
-        - 4
+        - 5
+        - 6
+        - 7
     output: 1
 
 nbit_6_2:
@@ -34,9 +34,9 @@ nbit_6_2:
     path: 6
     input: 6
     hiddens:
-        - 3
-        - 4
-        - 5
+        - 6
+        - 7
+        - 8
     output: 1
 
 # nbit_6_3_even:
@@ -54,9 +54,9 @@ nbit_8_1:
     path: 8
     input: 8
     hiddens:
-        - 2
-        - 3
-        - 4
+        - 5
+        - 6
+        - 7
     output: 1
 
 nbit_8_2:
@@ -64,9 +64,9 @@ nbit_8_2:
     path: 8
     input: 8
     hiddens:
-        - 3
-        - 4
-        - 5
+        - 6
+        - 7
+        - 8
     output: 1
 
 nbit_8_3:
@@ -74,9 +74,9 @@ nbit_8_3:
     path: 8
     input: 8
     hiddens:
-        - 4
-        - 5
-        - 6
+        - 7
+        - 8
+        - 9
     output: 1
 
 ionosphere:
