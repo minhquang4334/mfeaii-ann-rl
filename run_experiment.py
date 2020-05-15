@@ -11,7 +11,7 @@ instances = get_config('ann_lib/data/instances.yaml')
 # instances = get_config('ann_lib/data/same_topo_instance.yaml')
 # instances = get_config('ann_lib/data/mtl_instances.yaml')
 
-methods = {'mfeaii': mfeaii}
+methods = {'cea': cea, 'mfea': mfea, 'mfeaii': mfeaii}
 sgd_method = {'sgd': ''}
 # methods = {'mfeaii': mfeaii}
 
@@ -84,5 +84,5 @@ def mfea_rl():
     # tasks[0].env.close()
 
 if __name__ == "__main__":
-    mfea_rl()
+    mfea_ann()
     
