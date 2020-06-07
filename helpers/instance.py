@@ -34,12 +34,13 @@ class Instance:
         return tuple(results)
 
     def best_results(self):
-        max_iter = config_ea['num_iter'] - 1
+        max_iter = 199
         query = 'SELECT instance_id, method_id, best, seed from iteration where instance_id in {} And method_id in {} and num_iteration={} order by instance_id'.format(self.instances_id, self.methods_id, max_iter)
         cur.execute(query)
         re = cur.fetchall()
         # print (re, self.instances_id, self.methods_id)
         results = []
+        # print(re)
         print(self.instances_id, self.methods_id)
         for idx in self.instances_id:
             for idy in self.methods_id:
@@ -52,7 +53,7 @@ class Instance:
                         number_idx += 1
                         el.append(tmp[2])
                 el = np.asarray(el)
-                std = round(np.std(el), 6)           
+                std = round(np.std(el), 6)
                 avg = round(total/number_idx, 4)
                 results.append([idx, idy, avg, std])
                 

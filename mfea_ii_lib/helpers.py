@@ -3,7 +3,7 @@ import pickle
 import binascii
 from .operators import get_best_individual
 from scipy.optimize import OptimizeResult
-
+import numpy as np
 
 def get_config(path='config.yaml'):
     with open(path) as fp:

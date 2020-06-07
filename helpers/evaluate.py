@@ -4,11 +4,10 @@ from .instance import *
 
 def evaluate_EA():
     list_instances = get_list_instance_name()
-    instance = Instance(config, 'nbit_10_1') # task 8 bit
+    instance = Instance(config, 'FlappyBird') # task 8 bit
     arr = np.asarray(instance.results_by_tasks)
     best_result = arr # task 8bit max
     # best_result = np.sort(best_result, axis = -1)
-
     print (best_result.shape)
     results = []
     for best in best_result:
@@ -21,12 +20,14 @@ def evaluate_EA():
                 re[int(tmp[3])].append(tmp)
             result.append(re)
         result = np.asarray(result)
+        print (result.shape)
         result = result[:,:,:,2]
         results.append(result)
     results = np.asarray(results)
-    print (results.shape)
     convergence_train(results)
+    # compare_final_score(results) # if use to evaluate rl problem
 
+# compare mfea2 & sgd
 def compare_mfea2_sgd(method_id):
     instance = Instance(config, 'nbit_10_1') # task 8 bit
     result_mfea2_8bit = np.asarray(instance.results_subtask(instance_id=24, method_id=3))
@@ -41,26 +42,16 @@ def compare_mfea2_sgd(method_id):
 
     convergence(result, ['MFEA2', 'SGD'], XRange)
 
-# def find_best_index(result, index):
-#     i = 0
-#     max = 0
-#     max_index = 0
-#     for re in result:
-#         if(re[index] > max):
-#             max = re[index]
-#             max_index = i
-#         i += 1
-#     return max_index
 
 def mfea2_rmp(method_id):
-    instance = Instance(config, 'nbit_10_1') # task 8 bit
+    instance = Instance(config, 'breastCancer') # task 8 bit
     result_mfea2_8bit = np.asarray(instance.results_rmp(method_id=method_id))
     print (result_mfea2_8bit.shape)
-    result_mfea2_8bit = group_result_by_index(re=result_mfea2_8bit, index=0, number_of_el=3, margin=4)
+    result_mfea2_8bit = group_result_by_index(re=result_mfea2_8bit, index=0, number_of_el=3, margin=10)
     print (result_mfea2_8bit.shape)
     results = []
     for ins in result_mfea2_8bit:
-        result = group_result_by_index(ins, index=5, number_of_el=5, margin=0)
+        result = group_result_by_index(ins, index=5, number_of_el=29, margin=0)
         results.append(result)
     results = np.asarray(results)[:,:,:, [2,3]]
     rmp_results = results[0, :, :, 1]
