@@ -4,7 +4,7 @@ from .instance import *
 
 def evaluate_EA():
     list_instances = get_list_instance_name()
-    instance = Instance(config, 'breastCancer') # task 8 bit
+    instance = Instance(config, 'FlappyBird') # task 8 bit
     arr = np.asarray(instance.results_by_tasks)
     best_result = arr # task 8bit max
     # best_result = np.sort(best_result, axis = -1)

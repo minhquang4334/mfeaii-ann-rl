@@ -25,7 +25,7 @@ database:
     host: localhost
     user: root
     password: quang4334
-    db: uci_mtl
+    db: flappybird_2layer
     verbose: false
     method:
         name: VARCHAR(255)

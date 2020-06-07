@@ -34,7 +34,7 @@ class Instance:
         return tuple(results)
 
     def best_results(self):
-        max_iter = 999
+        max_iter = 199
         query = 'SELECT instance_id, method_id, best, seed from iteration where instance_id in {} And method_id in {} and num_iteration={} order by instance_id'.format(self.instances_id, self.methods_id, max_iter)
         cur.execute(query)
         re = cur.fetchall()
