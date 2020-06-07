@@ -25,24 +25,24 @@ database:
     host: localhost
     user: root
     password: quang4334
-    db: thesis_test
+    db: uci_mtl
     verbose: false
     method:
         name: VARCHAR(255)
 
 rl:
-    pop_size: 20
-    num_iter: 100
-    sbxdi: 2
-    pmdi: 5
+    pop_size: 30
+    num_iter: 200
+    sbxdi: 10
+    pmdi: 10
     pswap: 0.5
     dimension: 50
-    rmp: 0.3
+    rmp: 0.5
     repeat: 30
     tasks:       
-        FlappyBird: 
-            name: FlappyBird
-            init: 0.8
-            alpha: 1
+        MoutainCar: 
+            name: MoutainCar
+            init: 0.0025
+            alpha: 0.0005
             unit: 'gravity'
-            n_task: 3
+            n_task: 5

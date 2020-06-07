@@ -10,7 +10,7 @@ def export_result(instances, list_instances):
     MFEA (6,7,8) & $\mathbf{0.0082 \pm 0.0051}$ & $\mathbf{0.0029 \pm 0.0012}$ & $\mathbf{0.0012 \pm 0.0009}$ \\ 
     MFEAII (6,7,8)  & $0.0091 \pm 0.0066$ & $0.0038 \pm 0.0024$ & $0.0013 \pm 0.001$ \\ \hline
     '''
-    K = 4
+    K = 3
     results = []
     texts = ''
     for instance in instances:
@@ -26,18 +26,18 @@ def export_result(instances, list_instances):
             if(idx == 0): text = list_instances[i] + ' CEA '
             if(idx == 1): text = list_instances[i] + ' MFEA-I '
             if(idx == 2): text = list_instances[i] + ' MFEA-II '
-            if(idx == 3): text = list_instances[i] + ' MFEA-IIQ '
             for item in tmp:
-                text += item_template.format(item[2], item[3])
+                text += item_template.format(np.round(item[2],4), np.round(item[3],4))
                 index += 1
             text += '\\\\'
-            if(idx == 3): text += '\\hline\n'
+            if(idx == 2): text += '\\hline\n'
             texts += text
             print (text)
 
             idx = idx + 1
         i+=1
     return texts
+
 
 def result_to_string():
     list_instances = get_list_instance_name()
@@ -47,7 +47,7 @@ def result_to_string():
         instance = Instance(config, ins)
         result = instance.best_results()
         results.append(result)
-        print(ins, result)
+        # print(ins, result)
     export_result(results, list_instances)
 
 if __name__ == "__main__":

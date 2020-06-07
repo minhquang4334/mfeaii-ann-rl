@@ -64,7 +64,7 @@ def get_subpops(population, skill_factor, N):
   K = len(set(skill_factor))
   subpops = []
   for k in range(K):
-    idx = np.where(skill_factor[:N] == k)[0]
+    idx = np.where(skill_factor[:N] == k)[0][:N//K]
     subpops.append(population[idx, :])
   return subpops
 
@@ -79,8 +79,7 @@ class Model:
     N = subpop.shape[0] # Trong code gốc math lab thì ko dung D mà dùng số chiều thực của task -> D là số chiều multi task
     prob = np.ones([N])
     for d in range(D):
-      prob *= norm.pdf(subpop[:, d], loc=self.mean[d], scale=self.std[d])
-      # print(subpop[:, d].shape, norm.pdf(subpop[:, d], loc=self.mean[d], scale=self.std[d]).shape, prob.shape)
+      prob *= norm.pdf(subpop[:, d], loc=self.mean[d], scale=self.std[d]) #Xác suất của từng điểm của tập Subpop được tính trên trung vị và độ lệch chuẩn
     return prob
 
 def log_likelihood(rmp, prob_matrix, K):
@@ -127,46 +126,14 @@ def learn_rmp(subpops, dims):
 
       rmp = fminbound(lambda rmp: log_likelihood(rmp, probmatrix, K), 0, 1)
       # rmp += np.random.randn() * 0.01
-      if(rmp < 0.15): rmp = 0.15
-      rmp += np.random.randn() * 0.02
+      if(rmp < 0.1): rmp = 0.1
+      rmp += np.random.randn() * 0.01
       rmp = np.clip(rmp, 0, 1)
       rmp_matrix[k, j] = rmp
       rmp_matrix[j, k] = rmp
 
   return rmp_matrix
 
-
-# def decode_dimension(topo, num_hidden_max):
-#   num_input = topo[0]
-#   num_hidden = topo[1]
-#   start = 0
-#   end = start + num_input * num_hidden_max
-#   idx1 = np.r_[start:num_hidden]
-
-#   start = end
-#   end = start + num_hidden_max
-#   idx2 = np.r_[start:(start + num_hidden)]
-
-#   start = end
-#   end = start + num_hidden_max
-#   idx3 = np.r_[start:(start + num_hidden)]
-
-#   start = end
-#   end = start + 1
-#   idx4 = np.r_[start:(start + 1)]
-#   range_idx = np.concatenate((idx1, idx2, idx3, idx4))
-#   return range_idx
-
-
-# def get_subpops(population, skill_factor, N, topo):
-#   K = len(set(skill_factor))
-#   num_hidden_max = max(topo[:, 1])
-#   subpops = []
-#   range_idx = [decode_dimension(t, num_hidden_max) for t in topo]
-#   for k in range(K):
-#     idx = np.where(skill_factor == k)[0][:N//K]
-#     subpops.append(population[idx, range_idx[k]])
-#   return subpops
 
 # OPTIMIZATION RESULT HELPERS
 def get_best_individual(population, factorial_cost, scalar_fitness, skill_factor, sf):

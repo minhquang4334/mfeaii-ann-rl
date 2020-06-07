@@ -3,9 +3,9 @@ nbit_4_1:
     path: 4
     input: 4
     hiddens:
-        - 4
-        - 5
         - 6
+        - 7
+        - 8
     output: 1
 
 nbit_4_2:
@@ -38,16 +38,6 @@ nbit_6_2:
         - 7
         - 8
     output: 1
-
-# nbit_6_3_even:
-#     name: generateNbitDataSet
-#     path: 6
-#     input: 6
-#     hiddens:
-#         - 4
-#         - 5
-#         - 6
-#     output: 1
 
 nbit_8_1:
     name: generateNbitDataSet

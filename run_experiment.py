@@ -7,13 +7,12 @@ from experiment import *
 from fnn import *
 from helpers import *
 
-instances = get_config('ann_lib/data/instances.yaml')
+# instances = get_config('ann_lib/data/instances.yaml')
 # instances = get_config('ann_lib/data/same_topo_instance.yaml')
-# instances = get_config('ann_lib/data/mtl_instances.yaml')
+instances = get_config('ann_lib/data/mtl_instances.yaml')
 
 methods = {'cea': cea, 'mfea': mfea, 'mfeaii': mfeaii}
 sgd_method = {'sgd': ''}
-# methods = {'mfeaii': mfeaii}
 
 config = get_config('config.yaml')
 db = config['database']
@@ -24,7 +23,7 @@ def mfea_ann():
     for seed in range(local_config['repeat']):
         for instance in instances:
             print(instance)
-            taskset = create_taskset(instance)
+            taskset = create_general_taskset(instance)
             for method in methods:
                 results = []
                 methods[method](taskset, local_config, callback=results.append)
@@ -49,9 +48,6 @@ from rl import *
 def mfea_rl():
     local_config = config['rl']
     tasks_config = local_config['tasks']
-    # tasks = [CartPole(0.8 + i * 10) for i in range(10)]
-    # tasks = [Acrobot(1.0 + 0.1 * i) for i in range(5)]
-    # tasks = create_tasks(tasks_config['CartPole'])
     results = []
     for seed in range(local_config['repeat']):
         for t in tasks_config:
@@ -59,11 +55,13 @@ def mfea_rl():
             print('----------{}------------'.format(task['name']))
             tasks = create_tasks(task)
             for method in methods:
+                results = []
                 methods[method](tasks, local_config, callback=results.append, problem="mfea-rl")
                 method_id = get_method_id(conn, db, name=method)
                 for k in range(task['n_task']):
                     instance_id = get_instance_id(conn, db, task['name'], '{}__{}'.format(param(task['init'], task['alpha'], k), task['unit']))
                     for result in results:
+                        # print(method_id, instance_id, result[k].nit, result[k].fun)
                         kwargs = {'method_id': method_id,
                                 'instance_id': instance_id,
                                 'best': result[k].fun,
@@ -75,14 +73,6 @@ def mfea_rl():
                                 }
                         add_iteration(conn, db, **kwargs)
 
-    # print(results[4][0], np.asarray(results).shape)
-    # observation = np.array(tasks[0].env.state)
-    # for _ in range(1000):
-    #     tasks[0].env.render()
-    #     action = tasks[0].action(observation, results[4][0].x)
-    #     tasks[0].env.step(action)
-    # tasks[0].env.close()
-
 if __name__ == "__main__":
-    mfea_ann()
+    mfea_rl()
     

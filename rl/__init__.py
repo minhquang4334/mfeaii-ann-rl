@@ -1,6 +1,6 @@
 from .tasks import *
 
-task_lists = {'CartPole': CartPole, 'Acrobot': Acrobot, 'FlappyBird': FlappyBird}
+task_lists = {'CartPole': CartPole, 'Acrobot': Acrobot, 'FlappyBird': FlappyBird, 'MoutainCar': MoutainCar}
 # task: {name, init, alpha, n_task} eq: param = init + alpha * i
 def param(init, alpha, i): 
     return init + alpha * i

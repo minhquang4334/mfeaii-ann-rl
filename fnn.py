@@ -17,7 +17,8 @@
 #W(t+1) = W(t) + vW(t+1)
 
 #http://jmlr.org/proceedings/papers/v28/sutskever13.pdf
- 
+
+#https://github.com/deepsemantic/Neural-Network-in-Python/blob/master/Neural_Net.py
 
 # Numpy used: http://cs231n.github.io/python-numpy-tutorial/#numpy-arrays
  

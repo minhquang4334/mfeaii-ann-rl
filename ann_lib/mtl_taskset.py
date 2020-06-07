@@ -68,7 +68,8 @@ class mtlTaskset:
         while idx < self.L_max + 1:
             n_in = self.H_multitask[idx -  1]
             n_out = self.H_multitask[idx]
-            w_idx = genotype[base:(base + n_in * n_out)].reshape(n_in, n_out, order='F')
+            # w_idx = genotype[base:(base + n_in * n_out)].reshape(n_in, n_out, order='F') #random empty space in right side of genotype
+            w_idx = genotype[base:(base + n_in * n_out)].reshape(n_in, n_out) #random empty space in genotype
             base = base + n_in * n_out
             b_idx = genotype[base:(base + n_out)]
             base = base + n_out
@@ -87,6 +88,14 @@ class mtlTaskset:
         while idx < n_layer - 1:
             n_in = self.H_task[sf][idx]
             n_out = self.H_task[sf][idx + 1]
+            
+            #begin random permutation for diverse search space
+            if(np.random.rand() < 0.1):
+                per_y = np.random.permutation(w_t[idx].shape[1])
+                w_t[idx] = w_t[idx][:, per_y]
+                b_t[idx] = b_t[idx][per_y]
+
+            #end random permutation
             w_idx = w_t[idx][:n_in, :n_out]
             b_idx = b_t[idx][:n_out]
             w_idx = w_idx * 10 - 5
@@ -127,10 +136,12 @@ class mtlTaskset:
         return mse(self.y, out)
 
 if __name__ == '__main__':
-    config = yaml.load(open('data/instances.yaml').read())
-    instance = 'nbit_8_3_test'
+    config = yaml.load(open('data/mtl_instances.yaml').read())
+    instance = 'nbit_8_1'
     taskset = mtlTaskset(config[instance])
-    # print (taskset.H_task, taskset.L_task, taskset.H_multitask, taskset.D_multitask, taskset.dims)
+    idv = [i for i in range (61)]
+    idv = np.asarray(idv)
+    print (taskset.H_task, taskset.L_task, taskset.H_multitask, taskset.D_multitask, taskset.dims, taskset.W_per_task(idv,1))
     # print(taskset.W_per_task())
     pass
     # config = yaml.load(open('data/instances.yaml').read())
