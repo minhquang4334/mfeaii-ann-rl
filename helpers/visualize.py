@@ -23,7 +23,8 @@ def convergence_train(instance):
     fig, axes = plt.subplots(1, K)
     print(instance.shape)
     # instance = (instance + -5) * -1 #if using to evaluate flappybird problem
-    instance = instance
+    instance = -instance #pixcel copter problem
+    # instance = instance
     for k in range(K):
         results1 = instance[k][0]
         results2 = instance[k][1]
@@ -35,7 +36,7 @@ def convergence_train(instance):
         result = results1[:, :]
         mu = np.mean(result, axis = 0)
         sigma = np.std(result, axis = 0)
-        sigma = 0
+        # sigma = 0
         x = np.arange(result.shape[1])
 
         line1, = ax.plot(x, mu, color = "blue")
@@ -47,7 +48,7 @@ def convergence_train(instance):
 
         mu = np.mean(result, axis = 0)
         sigma = np.std(result, axis = 0) 
-        sigma = 0
+        # sigma = 0
         x = np.arange(result.shape[1])
         line2, = ax.plot(x, mu, color = "red")
         ax.fill_between(x, mu + sigma, mu - sigma, color = "red", alpha = 0.3)
@@ -58,7 +59,7 @@ def convergence_train(instance):
 
         mu = np.mean(result, axis = 0)
         sigma = np.std(result, axis = 0)
-        sigma = 0
+        # sigma = 0
         x = np.arange(result.shape[1])
         line3, = ax.plot(x, mu, color = "green")
         ax.fill_between(x, mu + sigma, mu - sigma, color = "green", alpha = 0.3)
@@ -67,7 +68,7 @@ def convergence_train(instance):
         ax.grid()
         # ax.legend((line1, line2, line3), (ALG1, ALG2, ALG3))
         ax.set_title("Tác vụ {}".format(k+1))
-        ax.set_ylabel('MSE')
+        ax.set_ylabel('Reward')
         ax.set_xlabel('Số thế hệ')
     # handles, labels = ax.get_legend_handles_labels()
     fig.legend((line1, line2, line3), (ALG1, ALG2, ALG3))
@@ -133,7 +134,8 @@ def convergence(instance, instances_name, X_Range):
 import os
 def compare_final_score(instance, algs = ["CEA", "MFEA-I", "MFEA-II"]):
 
-    instance = (instance[:, :, :, -1] + -5) * -1
+    #instance = (instance[:, :, :, -1] + -5) * -1 #flappy bird
+    instance = instance[:, :, :, -1] * -1
     # instance = (instance[:, :, :, -1]) # if using to compare EA problem
     print(instance.shape)
     number_seed = instance.shape[2]

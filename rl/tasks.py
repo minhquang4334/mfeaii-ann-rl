@@ -126,6 +126,7 @@ class FlappyBird:
         return 1 / (1 + np.exp(-x))
 
     def action(self, observation, x):
+        print(observation)
         x = x * 10 - 5
         w1 = x[:32].reshape(8,4)
         b1 = x[32:36]
@@ -210,6 +211,181 @@ class MoutainCar:
 
     def __del__(self):
         self.env.close()
+
+from ple.games.catcher import Catcher as CatcherEnv
+from ple import PLE
+
+class Catcher:
+
+    def __init__(self, width):
+        self.dim = 49
+        self.game = CatcherEnv(width=width, height=width)
+        self.env = PLE(self.game, fps=30, display_screen=False)
+        self.width = width
+        # self.game.player.vel = vel
+        self.allowed_actions = self.env.getActionSet()
+
+    def sigmoid(self, x):
+        return 1 / (1 + np.exp(-x))
+
+    def action(self, observation, x):
+        # print(observation, observation.shape)
+        x = x * 10 - 5
+        w1 = x[:32].reshape(4,8)
+        b1 = x[32:40]
+        w2 = x[40:48].reshape(8,1)
+        b2 = x[48]
+        out = self.sigmoid(observation @ w1 + b1)
+        out = self.sigmoid(out @ w2 + b2)
+        ix = int(out > 0.5)
+        action = self.allowed_actions[ix]
+        return action
+
+    def preprocess(self, observation):
+        X = self.width
+        Y = self.width       
+        state = np.array([
+                observation['player_x']/X,
+                observation['player_vel']/X,
+                observation['fruit_x']/X,
+                observation['fruit_y']/X,
+            ])
+        return state
+
+    def evaluate(self, x):
+        p = self.env
+        evaluate = 0
+        p.init()
+        p.reset_game()
+        while 1:
+            if p.game_over():
+                break
+            observation = p.getGameState()
+            state = self.preprocess(observation)
+            action = self.action(state, x)
+            reward = p.act(action)
+            evaluate += reward
+            if(evaluate >= 500): break
+        return - evaluate
+
+
+from ple.games.pixelcopter import Pixelcopter as PixelcopterEnv
+from ple import PLE
+
+class Pixelcopter:
+
+    def __init__(self, momentum):
+        self.dim = 73
+        self.game = PixelcopterEnv()
+        self.env = PLE(self.game, fps=30, display_screen=False)
+        self.game.player.momentum = momentum
+        self.allowed_actions = self.env.getActionSet()
+
+    def sigmoid(self, x):
+        return 1 / (1 + np.exp(-x))
+
+    def action(self, observation, x):
+        # print(observation, observation.shape)
+        x = x * 10 - 5
+        w1 = x[:56].reshape(7,8)
+        b1 = x[56:64]
+        w2 = x[64:72].reshape(8,1)
+        b2 = x[72]
+        out = self.sigmoid(observation @ w1 + b1)
+        out = self.sigmoid(out @ w2 + b2)
+        # print(out.shape)
+        ix = int(out > 0.5)
+        action = self.allowed_actions[ix]
+        return action
+
+    def preprocess(self, observation):
+        X = 48.
+        Y = 48.       
+        state = np.array([
+                observation['player_y']/Y,
+                observation['player_vel']/X,
+                observation['player_dist_to_ceil']/Y,
+                observation['player_dist_to_floor']/Y,
+                observation['next_gate_dist_to_player']/X,
+                observation['next_gate_block_top']/Y,
+                observation['next_gate_block_bottom']/Y
+            ])
+        return state
+
+    def evaluate(self, x):
+        p = self.env
+        evaluate = 0
+        p.init()
+        p.reset_game()
+        while 1:
+            if p.game_over():
+                break
+            observation = p.getGameState()
+            state = self.preprocess(observation)
+            action = self.action(state, x)
+            reward = p.act(action)
+            evaluate += reward
+        return - evaluate
+
+
+from ple.games.pong import Pong as PongEnv
+from ple import PLE
+
+class Pong:
+
+    def __init__(self, players_speed_ratio):
+        self.dim = 73
+        self.game = PongEnv(players_speed_ratio=players_speed_ratio)
+        self.env = PLE(self.game, fps=30, display_screen=False)
+        self.allowed_actions = self.env.getActionSet()
+
+    def sigmoid(self, x):
+        return 1 / (1 + np.exp(-x))
+
+    def action(self, observation, x):
+        # print(observation, observation.shape)
+        x = x * 10 - 5
+        w1 = x[:56].reshape(7,8)
+        b1 = x[56:64]
+        w2 = x[64:72].reshape(8,1)
+        b2 = x[72]
+        out = self.sigmoid(observation @ w1 + b1)
+        out = self.sigmoid(out @ w2 + b2)
+        # print(out.shape)
+        ix = int(out > 0.5)
+        action = self.allowed_actions[ix]
+        return action
+
+    def preprocess(self, observation):
+        X = 64.
+        Y = 48.       
+        state = np.array([
+                observation['player_y'],
+                observation['player_velocity'],
+                observation['cpu_y'],
+                observation['ball_x'],
+                observation['ball_y'],
+                observation['ball_velocity_x'],
+                observation['ball_velocity_y']
+            ])
+        return state
+
+    def evaluate(self, x):
+        p = self.env
+        evaluate = 0
+        p.init()
+        p.reset_game()
+        while 1:
+            if p.game_over():
+                break
+            observation = p.getGameState()
+            state = self.preprocess(observation)
+            action = self.action(state, x)
+            reward = p.act(action)
+            evaluate += reward
+            if(reward > 0): print(reward)
+        return - evaluate
+
 
 def main():
     task = CartPole(9.8)
