@@ -25,7 +25,7 @@ database:
     host: localhost
     user: root
     password: quang4334
-    db: flappybird_2layer
+    db: pixelcopter_20off
     verbose: false
     method:
         name: VARCHAR(255)
@@ -39,10 +39,10 @@ rl:
     dimension: 50
     rmp: 0.5
     repeat: 30
-    tasks:       
-        MoutainCar: 
-            name: MoutainCar
-            init: 0.0025
-            alpha: 0.0005
-            unit: 'gravity'
+    tasks:
+        Pong: 
+            name: Pong
+            init: 0.3
+            alpha: 0.1
+            unit: 'ratio'
             n_task: 5

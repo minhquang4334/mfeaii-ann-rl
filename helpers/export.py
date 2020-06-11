@@ -27,7 +27,7 @@ def export_result(instances, list_instances):
             if(idx == 1): text = list_instances[i] + ' MFEA-I '
             if(idx == 2): text = list_instances[i] + ' MFEA-II '
             for item in tmp:
-                text += item_template.format(np.round(item[2],4), np.round(item[3],4))
+                text += item_template.format(np.round(item[2],2) * -1, np.round(item[3],2))
                 index += 1
             text += '\\\\'
             if(idx == 2): text += '\\hline\n'
