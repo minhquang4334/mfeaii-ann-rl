@@ -1,0 +1,23 @@
+\label{sec:multitask-rl}
+\subsection{Động lực của bài toán}
+Trong thực tế, môi trường của học tăng cường phụ thuộc vào nhiều yếu tố. Các yếu tố này chỉ cần thay đổi một chút sẽ khiến môi trường thay đổi theo. Việc xác định một chính sách tối ưu cho nhiều môi trường đồng thời là không thực tế. Bởi vậy ta có thể nhìn nhận mỗi tập yếu tố tương ứng của môi trường có thể đại diện bởi một tác vụ tối ưu. 
+
+Giả sử môi trường A với thuộc tính trọng lực$=9.8$ là tác vụ $T_1$ và môi trường A với trọng lực$=19.8$ là tác vụ $T_2$. Có thể tin rằng việc huấn luyện 2 tác vụ này có mối tương đồng với nhau, việc huấn luyện 1 tác vụ cũng sẽ hỗ trợ, tăng tốc cho nhiệm vụ huấn luyện tác vụ còn lại.
+
+Vậy nên việc tôi nghĩ đến việc thiết kế một mô hình huấn luyện chính sách cho nhiều môi trường cùng lúc nhằm tăng tốc độ cũng như tính tổng quát của một chính sách. 
+
+\subsection{Phát biểu bài toán đa nhiệm trong học tăng cường}
+Bài toán huấn luyện nhiều mô hình học tăng cường với các môi trường khác nhau có thể được phát biểu như sau:
+\begin{itemize}
+    \item \textbf{Đầu vào}: 
+        \begin{itemize}
+            \item Cho $K$ tác vụ $T_1, T_2,...T_K$, mỗi tác vụ tương ứng với một bài toán huấn luyện mô hình học tăng cường sử dụng mạng neural.
+            \item $h_k$ là bộ tham số môi trường tương ứng với tác vụ $T_k$, $h_j$ là bộ tham số môi trường tương ứng với tác vụ $T_k$, $h_j \neq h_k$
+        \end{itemize}
+    \item \textbf{Đầu ra}: $K$ tác vụ đã được tối ưu tương ứng với $K$ mô hình mạng neural tối ưu.
+    \item \textbf{Mục tiêu}: Tìm ra bộ tham số tối ưu của mỗi mô hình mạng neural tương ứng với mô bài toán học tăng cường sao cho tổng phần thưởng thu được trên từng bài là lớn nhất.
+\end{itemize}
+% \subsection{Ý tưởng giải quyết bài toán đa nhiệm}
+% Nhìn lại ở chương \ref{chap:problem}, tôi đã đưa ra một phương pháp mới trong việc huấn luyện nhiều mạng Nơ-ron (ANN) đồng thời đó là sử dụng giải thuật toán tiến hóa đa nhiệm 2. Đây là một hướng đi mới, trên thực tế đã có một số nghiên cứu liên quan. Qua đó đã chứng minh mức độ hiệu quả khi áp dụng thuật toán tiến hóa đa nhiệm vào huấn luyện các mạng ANN. Như tôi đã trình bày các mạng ANN thông thường trong lĩnh vực học có giám sát đa số thường được huấn luyện bằng phương pháp dựa trên \emph{gradient-based} bởi vì nó có thể dễ dàng theo dõi, phân tích được \emph{đạo hàm}. Tuy nhiên trong học tăng cường việc xác định \emph{đạo hàm} là vô cùng khó khăn do sự phụ thuộc lẫn nhau giữa kết quả của trạng thái hiện tại với với những hành động ở trạng thái sau đó. Nên các phương pháp sử dụng \emph{gradient-based} không thực sự khả thi. 
+
+% Bởi các yếu tố này nên tôi sẽ đề xuất phương pháp áp dụng thuật toán tối ưu hóa đa nhiệm 2 - MFEA-II để huấn luyện nhiều mạng \emph{policy} tương ứng với nhiều môi trường RL đồng thời.

@@ -1,0 +1,126 @@
+\chapter{Tiến hóa đa nhiệm trong huấn luyện mạng neural}
+\label{mfea2}
+% \section{Tiến hóa đa nhiệm dưới góc độ xác suất}
+% \input{chapters/mfea2/probability}
+% \section{Tiến hóa đa nhiệm 2 - MFEAII}
+% \input{chapters/mfea2/mfeaii}
+\section{Tổng quan mạng neural}
+    \subsection{Đơn vị nơ-ron cơ bản}
+    Tương tự như thuật toán tiến hóa, mạng neural hay còn gọi là mạng neural nhân tạo thần kinh nhân tạo (thuật ngữ gốc: \emph{Artificial Neural Network - ANN}) \cite{hassoun1995fundamentals} cũng là một ý tưởng được lấy cảm hứng từ mạng các nơ-ron (thuật ngữ gốc: \emph{neuro}) thần kinh của con người. Trong đó, nơ-ron thần kinh là một đơn vị cơ bản cấu tạo hệ thống thần kinh quan trọng nhất của bộ não, nó có cấu trúc được mô tả như hình bên dưới:
+    \begin{figure}[ht]
+        \centering
+        \scalebox{0.9}{\fbox{\includegraphics[width=\linewidth]{neuron-human.png}}}
+        \caption{Cấu trúc của một perceptron đơn lẻ}
+        \label{fig:problem:human-neuron}
+    \end{figure}
+    Một đơn vị nơ-ron đơn lẻ được gọi là \emph{perceptron} \cite{stephen1990perceptron}. Từ mô hình của perceptron được mô tả trong hình \ref{fig:problem:human-neuron} có thể thấy mỗi một nơ-ron sẽ nhận nhiều đầu vào nhưng chỉ cho ra một kết quả duy nhất. Được biểu diễn dưới dạng mô hình như sau:
+    \begin{figure}[ht]
+        \centering
+        \fbox{\includegraphics[width=0.7\linewidth]{perceptron.png}}
+        \caption{Cấu trúc của một perceptron nhân tạo}
+        \label{fig:problem:perceptron}
+    \end{figure}
+    Một perceptron sẽ nhận một hoặc nhiều đầu $x$ vào dạng nhị phân và cho ra một kết quả $o$ dạng nhị phân duy nhất. Các đầu vào được điều phối tầm ảnh hưởng bởi các tham số trọng lượng tương ứng $w$ của nó, còn kết quả đầu ra được quyết định dựa vào một ngưỡng quyết định $b$ nào đó.
+    \subsection{Kiến trúc của ANN}
+    ANN là kết hợp của các tầng perceptron hay còn gọi là perceptron đa tầng. 
+    \begin{figure}[ht]
+        \centering
+        \scalebox{0.8}{\fbox{\includegraphics[width=\linewidth]{ff-neural.png}}}
+        \caption{Kiến trúc ANN}
+        \label{fig:problem:neural-architect}
+    \end{figure}
+    Một kiến trúc của ANN bao gồm 3 kiểu tầng chính:
+    \begin{enumerate}
+        \item \textbf{Tầng vào} (input layer): Là tầng bên trái cùng của mạng thể hiện cho đầu vào của mạng.
+        \item \textbf{Tầng ẩn} (hidden layer): Là tầng nằm giữa tầng vào và tầng ra của mạng thể hiện cho các suy luận logic của mạng.
+        \item \textbf{Tầng ra} (output layer): Là tầng nằm bên phải cùng của mạng thể hiện cho các đầu ra của mạng. Một mạng có thể có một hoặc nhiều đầu ra.
+    \end{enumerate}
+    Ở mỗi tầng, số lượng các nút mạng (nơ-ron) có thể khác nhau tuỳ thuộc vào bài toán và cách giải quyết. Nhưng thường khi làm việc các tầng ẩn thường có số lượng nơ-ron bằng nhau. 
+    \subsection{Mạng neural lan truyền tiến}
+    Như hình \ref{fig:problem:neural-architect} có thể thấy tất các nút mạng được kết hợp đôi một với nhau theo một chiều duy nhất từ tầng vào đến tầng ra. Tức là mỗi nốt ở tầng nào đó sẽ nhận đầu vào từ các nốt ở tầng trước đó mà không có chiều suy luận ngước lại. Hay nói cách khác ANN là này là một mạng lan truyền tiến \cite{fine2006feedforward}. 
+    \begin{equation}
+      \begin{array}{l}
+        z_i^{l+1} = \sum_{j=1}^{n^{(l)}}w_{ij}^{(l+1)}a_j^{(l)} + b_j^{(l+1)} \\
+        \\
+        a_i^{(l+1)} = g(z_i^{(l+1)})
+      \end{array}
+    \end{equation}
+    Trong đó $n^{(l)}$ là số lượng nút ở tầng $l$ tương ứng và $a_j^{(l)}$ là nút mạng thứ $j$ của tầng $l$. Còn $w_{ij}^{(l+1)}$ là tham số trọng lượng đầu vào $a_j^{(l)}$ đối với nút mạng thứ $i$ của tầng $l+1$ và $b_j^{(l+1)}$ là độ lệch thiên kiến (bias) của nút mạng thứ $i$ tầng thứ $l+1$. Đầu ra của nút mạng này được biểu diễn bằng $a_i^{(l+1)}$ ứng với hàm kích hoạt $g(z_i)$ tương ứng. Và riêng với tầng vào (input layer), thông thường $a^{(1}$ cũng chính là các đầu vào $x$ tương ứng của mạng. 
+    \subsection{Huấn luyện mô hình mạng neural}
+    Trong mục này chúng ta sẽ cùng bàn luận về một số các cách tiếp cận chính cho vấn đề huấn luyện mô hình ANN.
+    Trước khi giải thích làm thế nào để huấn luyện một ANN thì ta sẽ cần định nghĩa về hàm lỗi (thuật ngữ gốc: \emph{loss function}). Hàm lỗi là hàm cho ta biết mạng hiện tại đang tốt như thế nào trên một tác vụ, bộ dữ liệu cụ thể. Một cách tiếp cận trực quan và đơn giản nhất mà ta có thể nghĩ ra đó là sử dụng hàm trung bình bình phương lỗi (thuật ngữ gốc: \emph{Min Square Error - MSE}).
+    \begin{equation}
+      L(y, \widehat{y}) = \frac{1}{m}\sum_{i=1}^m(y_i - \widehat{y_i})^2
+    \end{equation}
+    Với $\widehat{y}$ là giá trị ước lượng từ mạng, $y$ là giá trị thực tế từ bộ dữ liệu huấn luyện. Nếu giá trị hàm lỗi lớn chứng tỏ mô hình mạng nơ-ron của ta chênh lệch nhiều, chưa đưa ra kết quả tốt. Nhiệm vụ của ta sẽ là tối ưu bộ tham số $(w,b)$ sao cho hàm lỗi nhỏ nhất có thể. Và đây cũng là ý tưởng chính trong việc huấn luyện mô hình ANN. Để thực hiện nhiệm vụ tối ưu này, có 2 lớp phương pháp chính:
+    \begin{itemize}
+        \item Lớp thuật toán sử dụng phương pháp \textbf{gradient-based}.
+        \item Lớp thuật toán \textbf{tiến hóa - EA}.
+    \end{itemize}
+    \subsubsection{Phương pháp Gradient Based}
+    Hầu hết các nhóm nghiên cứu đều sử dụng phương pháp gradient-based để huấn luyện mạng nơ-ron hơn là sử dụng các phương pháp tiến hóa. Trong đó một phương pháp kinh điển, là nền tảng của các phương pháp khác đó là \emph{Grdient Descent - GD}.
+    
+    GD và các biến thể của nó là một trong những phương pháp phổ biến
+    nhất. Ý tưởng chung là xuất phát từ một điểm mà chúng ta coi là gần với nghiệm
+    của bài toán, sau đó dùng một phương pháp lặp để tiến dần đến điểm cần tìm,
+    tức đến khi đạo hàm gần với 0 \cite{lecun2015deep}. 
+    
+    Giả sử ta tối ưu một hàm 1 biến $f(x), x\in \mathbb{R}$, gọi $x^*$ là tối ưu cục bộ của bài toán. Giả sử 1 điểm $x_t$ gần $x^*$, tại đó $f^'(x_t) > 0$ thì hướng tốt nhật để cập nhật $x_t$ là đi ngược hướng với đạo hàm tại đó. Trong GD, người ta cập nhật $x_{t+1}=x_t - \eta f^'(x_t)$, với $\eta$ được gọi là tốc độ học (thuật ngữ gốc: \emph{learning rate}). Hướng cập nhật tham số theo GD giúp nhanh chóng tối ưu đến một điểm cục bộ tương ứng với điểm xuất phát ban đầu. Đây là cách tiếp cận trục quan nhất và là công cụ chính để phát triển các thuật toán phức tạp hơn.
+    \begin{figure}[ht]
+        \centering
+        \fbox{\includegraphics[width=0.4\linewidth]{gd.jpg}}
+        \caption{Minh họa cách cập nhật tham số của gradient descent}
+        \label{fig:gd}
+    \end{figure}
+    Từ nhận xét trên, người ta xây dựng công thức cập nhật cho hàm nhiều biến $f(\theta)$ ($\theta$ thường được dùng để ký hiệu tập tham số của mô hình cần tối ưu) như sau:
+    \begin{equation}
+        \theta_{t+1} = \theta_t - \eta \bigtriangledown_\theta f(\theta_t)
+    \end{equation}
+    Bắt ngưồn từ GD, rất nhiều các giải thuật dẫn xuất được phát triển dựa vào việc cải tiến về điểm khởi tạo, hoặc
+    bước nhảy, có thể cố định hay di động, hoặc cải tiến hướng cập nhật tham số với đạo hàm có thêm các yếu tố giúp thuật toán vượt qua được các tối ưu cục bộ và tiến gần hơn đến tối ưu toàn cục. 
+    \subsubsection{Vấn đề của phương pháp Gradient-Based}
+    Ngoài ra còn rất nhiều các biến thể khác của SGD như Lan truyền ngược trung bình bình phương lỗi (thuật ngữ gốc: Root Mean Square Propagation - RMSProp) \cite{tieleman2012lecture}, Gia tốc cho đạo hàm Nesterov (thuật ngữ gốc: Nesterov Accelerated Gradient - NAG) \cite{nesterov2013gradient}, Adam \cite{kingma2014adam}... Các thuật toán này về cơ bản đều thực hiện rất nhanh và có những thành công trên những bộ dữ liệu nhất định ở nhiều lĩnh vực khác nhau. Tuy nhiên, chúng tồn tại những nhược
+    điểm cố hữu của các phương pháp dựa trên đạo hàm:
+    \begin{itemize}
+        \item Với các bài toán học tăng cường, giá trị đầu ra thường là ước lượng nên việc áp dụng phương pháp sử dụng gradient-based gặp trở ngại lớn.
+        \item Các mô hình ANN thực tế với rất nhiều tham số tạo nên một không gian tìm kiếm đa chiều phức tạp với rất nhiều điểm tối ưu cục bộ, điểm yên ngựa, bình nguyên (thuật ngữ gốc: plateau) hay các vùng phẳng \cite{eldan2016power, kawaguchi2016deep, miikkulainen2019evolving}. Những trở ngại đó khiến cho việc tìm ra tối ưu toàn cục là rất khó khăn, đòi hỏi khối lượng tính toán lớn và phải có sự tham gia của con người trong những thực nghiệm lặp đi lặp lại nhàm chán.
+    \end{itemize}
+    
+    Để giải quyết các thách thức này đòi hỏi chúng ta cần đưa ra những hướng giải quyết mới có thể là thay đổi GD hoặc áp dụng những phương pháp tối ưu hóa khác có khả năng vượt trội, và thuật toán tiến hóa có thể là một ứng viên tiềm năng như vậy. EA đưa ra một chiến lược tự thích nghi với môi trường được xem như là một công cụ hữu hiệu để tối ưu trọng số kết nối mà không phải quan tâm đến việc tính đạo hàm \cite{whitley1990genetic}. Để tối ưu trọng sô, EA sẽ dùng chiến lược mã hóa nhị phân hoặc mã hóa số thực rồi coi việc học ANN là một bài toán tối ưu hóa liên tục \cite{yao1999evolutionary}. Nhờ vậy EANN có thể xử lý các trường hợp phức tạp, hàm không khả vi, đa cực trị hay có nhiều điểm yên ngựa... (vốn xảy ra càng nhiều khi ANN càng sâu và càng có nhiều tham số). Một số nhóm nghiên cứu nổi tiếng như Google Brain, OpenAI, Uber \cite{wong2018transfer, salimans2017evolution} đã đưa ra những nghiên cứu trong việc áp dụng giải thuật tiến hóa trong việc huấn luyện ANN để giải quyết bài toán. 
+    Bởi vậy từ các mục tiếp theo trở đi, chúng ta sẽ đi vào tìm hiểu - phương pháp thứ 2 sử dụng ý tưởng tiến hóa để huấn luyện mạng neural. 
+\section{Giới thiệu tiến hóa đa nhiệm trong huấn luyện mạng neural}
+    \subsection{Cách tiếp cận tiến hóa trong huấn luyện mạng neural}
+    \subsubsection{Định nghĩa}
+    Phương pháp sử dụng thuật toán tiến hóa để huấn luyện mạng neural hay còn gọi là neuroevolution \cite{floreano2008neuroevolution} xem vấn đề cần học giống như một bài toán tối ưu hộp đen (thuật ngữ gốc: \emph{black-box optimisation}) nơi các giải pháp được cải thiện qua các thế hệ tiến hóa. Neuroevolution sử dụng thuật toán tiến hóa để xây dựng, huấn luyện ANN bao gồm các tham số, cấu trúc của mạng. Trong neuroevolution, một mẫu gen (thuật ngữ gốc: \emph{gennotype}) là kiểu cá thể của quần thể sẽ được ánh xạ với các tham số trong ANN. Qua mỗi thế hệ tiến hóa các cá thể sẽ được đánh giá dựa theo hàm đánh giá tương ứng với bài toán để chọn lọc và tiếp tục xây dựng thế hệ tiếp theo.
+    \subsubsection{Các loại mã hóa}
+    Một vấn đề cần quan tâm khi huấn luyện mạng neural bằng phương pháp tiến hóa đó là việc mã hóa từ mô hình mạng (ví dụ mô hình mạng trong hình \ref{fig:problem:neural-architect} về các cá thể như thế nào. Trong neuroevolution ta có 2 phương pháp mã hóa cá thể là:
+    \begin{itemize}
+        \item \textbf{Mã hóa trực tiếp} (thuật ngữ gốc: \emph{Direct-Encoding}: Là phương pháp mã hóa trực tiếp các thông số của mạng, giá trị các nơ-ron trong mạng vào những vị trí cụ thể trong kiểu gen.
+        \item \textbf{Mã hóa gián tiếp} (thuật ngữ gốc: \emph{Indirect-Encoding}: Là phương pháp mã hóa gián tiếp theo cách tạo ra một mô hình mạng từ kiểu gen cụ thể.
+    \end{itemize}
+    Mỗi phương pháp mã hóa sẽ phụ thuộc vào kiểu bài toán mà nó giải quyết. 
+    \subsection{Dạng bài toán áp dụng tiến hóa đa nhiệm trong huấn luyện mạng neural}
+    Tuy nhiên một vấn đề nảy sinh trong việc huấn luyện ANN đó là việc không khai thác được những tri thức đã học được trong các mô hình đã học được trước đó. Chẳng hạn với bài toán huấn luyện mô hình học tăng cường, khi thông số môi trường thay đổi thì ta cần phải huấn luyện lại từ đầu mà không tận dụng được bất kỳ tri thức nào trước đó.
+    Bằng ý tưởng của thuật toán tiến hóa đa nhiệm đã được trình bày ở phần trên thì việc áp dụng thuật toán vào huấn luyện nhiều ANN đồng thời có thể giải quyết được vấn đề này. Tiến hóa đa nhiệm sẽ khai phá được mối quan hệ tiềm ẩn giữa các tác vụ có liên quan đến nhau, qua đó đẩy nhanh tốc độ hội tụ của các tác vụ.
+    
+    Cần phải lưu ý rằng chữ \textit{tác vụ} khi áp dụng tiến hóa đa nhiệm vào huấn luyện ANN có thể hiểu theo nhiều nghĩa.
+    \begin{itemize}
+        \item \textbf{Bài toán thứ nhất}: Coi mỗi tác vụ là một bộ dữ liệu có số lượng hoặc tính chất của thuộc tính khác nhau.
+        \item \textbf{Bài toán thứ hai}: Coi mỗi tác vụ tương ứng với một cấu trúc ANN khác nhau.
+    \end{itemize}
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=1.0\linewidth]{images/neural-problem.png}
+        \caption{Các loại bài toán huấn luyện tham số ANN}
+        \label{fig:problem:neural-problem}
+    \end{figure}
+    Như trong hình \ref{fig:problem:neural-problem} mỗi định nghĩa về tác vụ sẽ tương ứng với một lớp bài toán khác nhau cần xây dựng mô hình riêng để giải quyết. Trong đồ án này tôi sẽ đưa ra các đề xuất của mình để giải quyết lần lượt cả 2 lớp bài toán trên.
+    \begin{itemize}
+        \item Với lớp bài toán thứ nhất tôi sẽ trình bày ở chương \ref{chap:problem_rl} trong việc áp dụng tiến hóa đa nhiệm trong việc huấn luyện mô hình học tăng cường trên nhiều môi trường đồng thời.
+        \item Với lớp bài toán thứ hai tôi sẽ trình bày tại chương \ref{chap:problem} trong việc áp dụng tiến hóa đa nhiệm huấn luyện nhiều ANN với cấu trúc khác nhau.
+    \end{itemize}
+    Tương ứng với mỗi bài toán tôi sẽ đề xuất những giải thuật, chiến lược áp dụng tiến hóa đa nhiệm của mình. Đương nhiên mỗi vấn đề đều có những khó khăn, thách thức riêng, tuy nhiên qua quá trình giải những bài toán như vậy sẽ làm rõ hơn việc tư tưởng tiến hóa, đặc biệt là tiến hóa đa nhiệm có thực sự phù hợp trong huấn luyện ANN hay không.
+    
+    Lưu ý rằng tiến hóa đa nhiệm mà tôi nhắc tới sẽ là việc áp dụng đồng thời cả MFEA và MFEAII. Trong đó MFEA-II sẽ là thuật toán chủ yếu tôi muốn trình bày và MFEA sẽ là thuật toán cơ sở để so sánh, bên cạnh thuật toán tiến hóa thông thường.
+    
+

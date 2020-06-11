@@ -1,0 +1,16 @@
+% \subsection{Động lực của tiến hóa đa nhiệm}
+% \input{chapters/introduction/background}
+\subsection{Tối ưu hóa đa nhiệm}
+Trong những năm gần đây mô hình tối ưu đa nhiệm (thuật ngữ gốc: Multifactorial Optimization - \emph{MFO}) đã lần đầu được đề xuất bởi Ong and Gupta trong bài báo \cite{ong2016evolutionary}. Lấy cảm hứng từ việc kiểm soát cùng lúc nhiều công việc trong cùng 1 thời điểm \cite{caruana1997multitask}. Ong and Gupta cho rằng các bài toán tối ưu hóa khác nhau có những điểm tương đồng nhất định mà việc giải quyết bài toán này có thể giúp bổ trợ cho bài toán kia. Dựa trên ý tưởng đó, họ đề xuất mô hình MFO trên cơ sở thực hiện việc tìm kiếm tập lời giải khả thi cho cùng lúc nhiều bài toán tối ưu hóa.
+\begin{definition}
+Bài toán \textbf{MFO}: cùng lúc cực tiểu hóa tập $K$ hàm $f_k(x^{(k)}), x^{(k)}\in \mathcal{X}_k \subset \mathbb{R}^n, k\in {1,2,...,K}$ ký hiệu là $\min_{x^{(k)}\in \mathbb{R}^n} f_k(x^{(k)})$. Trong đó:
+\begin{itemize}
+    \item $\min_{x^{(k)}\in \mathbb{R}^n}$ là biến quyết định của bài toán thứ $k$.
+    \item $f_k(x): \mathcal{X}_k \rightarrow \mathbb{R}$ là hàm mục tiêu của bài toán thứ $k$.
+    \item $\mathcal{X}_k$ là không gian tìm kiếm của bài toán thứ $k$
+\end{itemize}
+Mục tiêu của bài toán là tìm bộ lời giải tối ưu $(x^{(1)*},x^{(2)*}, x^{(3)*},...., x^{(K)*} )$ sao cho với mọi lời giải thành phần $x^{(k)*}$ ta có $f(x^{(k)*}) \leq f(x^{(k)}) \forall x^{(k)} \in \mathcal{X}_k$.
+\end{definition}
+Cụ thể trong MFO, ta cùng lúc đi tìm tập lời giải cho từng hàm tối ưu từng thành phần riêng lẻ. Cùng với việc đề xuất mô hình MFO. Ong and Gupta đã tiếp tục đề xuất các phương pháp so sánh lời giải trong không gian chung đa nhiệm và phát triển giải thuật tiến hóa đa nhiệm (thuật ngữ gốc: \emph{Multifactorial Evolution Algorithm - MFEA}) để giải quyết bài toán MFO nhằm tận dụng hiệu quả tìm kiếm của việc giải đồng thời các bài toán tối ưu hóa. Trong đồ án này tác giả sẽ gọi thuật toán MFEA là MFEA-I để phân biệt với thuật toán chính được nghiên cứu trong đồ án là giải thuật tiến hóa đa nhiệm với ước lượng hệ số trao đổi trực tuyến (thuật ngữ gốc: Multifactorial Evolution Algorithm with Online Transfer Parameter Estimation - MFEA-II)
+\subsection{Tiến hóa đa nhiệm}
+\input{chapters/introduction/mfeai}

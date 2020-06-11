@@ -1,0 +1,14 @@
+\begin{algorithm}
+    \caption{Assortative mating}
+    Consider two parent candidates $p_a$ and $p_b$ randomly selected from $current-pop$
+    \begin{algorithmic}[1]
+        \State Generate a random number $rand$ between 0 and 1
+        \If{$(\tau_a == \tau_b)$ or $(rand < rmp)$}
+            \State{Parents $p_a$ and $p_b$ crossover to give two offspring individuals $c_a$ and $c_b$}
+        \Else
+            \State $p_a$ is mutated slightly to give an offspring $c_a$
+            \State $p_b$ is mutated slightly to give an offspring $c_b$
+        \EndIf
+    \end{algorithmic}
+    \label{alg:assortative_mating}
+\end{algorithm}

@@ -1,0 +1,32 @@
+\chapter{Kết quả thực nghiệm}
+\label{chap:result}
+
+\section{Cơ sở so sánh thuật toán tiến hóa}
+Các thực nghiệm được thiết kế để chứng minh độ hiệu quả của MFEA-II trong bài toán huấn luyện nhiều mạng ANN khác cấu trúc và mô hình ANN biểu diễn mạng policy của RL. Nhằm đánh giá hiệu quả của giải thuật đề xuất áp dụng MFEA-II, đồ án thực nghiệm so sánh với các giải thuật tiến hóa, tiến hóa đa nhiệm thông thường là CEA và MFEA-I. 
+\section{Các bộ thực nghiệm}
+\input{chapters/result/benchmark}
+\section{Cài đặt thực nghiệm}
+\input{chapters/result/config}
+\section{Kết quả}
+\input{chapters/result/results}
+\pagebreak
+\section{Nhận xét và bàn luận}
+\subsection{Bài toán huấn luyện nhiều ANN khác cấu trúc}
+
+Kết quả thực nghiệm chỉ rõ ưu điểm của cách tiếp cận của tiến hóa đa nhiệm trên tất cả các bộ dữ liệu thực nghiệm. Giải thuật CEA thể hiện không tốt trên tất cả các bài \emph{n-bit} và các bộ dữ liệu thực tế so với cách tiếp cận bằng tiến hóa đa nhiệm. Điều này có thể lý giải bởi với các bài toán có cấu trúc gần tương đồng với nhau việc trao đổi tri thức giữa các tác vụ giúp tăng tốc độ tối ưu trên từng tác vụ. Và khi so sánh giữa các giải thuật tiến hóa đa nhiệm với nhau thì MFEA-II thể hiện sự vượt trội so với MFEA-I nhờ ưu thế có thể xác định được mức độ chia sẻ tri thức phù hợp tại từng thời điểm. Các tác vụ được tối ưu hóa bởi MFEA-II có tốc độ nhanh hơn so với các thuật toán khác trên tất cả các tác vụ.
+
+\subsubsection{Mạng cùng độ sâu}
+Trong bài thực nghiệm ANN cùng độ sâu thuật toán MFEA-II tốt hơn so với CEA $100\%$ (8/8) số bộ dữ liệu, so với MFEA-I là $75\%$ số bộ dữ liệu (6/8). Với các bộ dữ liệu MFEA-II trội hơn thì xét về mức độ cải tiến, so với CEA là $10 \sim 12\%$, so với MFEA là $6 \sim 8\%$. Trên một số bài như trong hình \ref{fig:10bit_2layer} thì MFEA-II và MFEA-I có kết quả tương dương nhau tất cả các tác vụ. Có thể lý giải rằng với những bộ này mức độ tương đồng trung bình giữa các tác vụ là lớn việc dẫn tới việc tối ưu bằng MFEA-II hay MFEA-I không có nhiều khác biệt. Tuy nhiên MFEA-II vẫn có thể coi là tốt hơn nếu nhìn trên góc độ tốc độ hội tụ của thuật toán.
+
+\subsubsection{Mạng khác độ sâu}
+Trong bài thực nghiệm ANN cùng khác sâu thuật toán MFEA-II tốt hơn so với CEA và MFEA-I $100\%$ (3/3) số bộ dữ liệu. Xét về mức độ cải tiến, so với CEA là $12 \sim 15\%$, so với MFEA là $5 \sim 7\%$. Cá biệt trong hình \ref{fig:8bit_multilayer} thì mặc dù tính số lượng trên 3 tác vụ MFEA-II đem lại kết quả tốt hơn nhưng với tác vụ thứ 3, MFEA-II có kết quả kém hơn so với MFEA-I và CEA thông thường. Điều này có thể lý giải bởi ở các mạng sâu khác nhau về số lớp, lượng tham số chia sẻ chung giữa các cấu hình là thấp hơn, do đó các phép lai ghép đa nhiệm ít tỏ ra ưu thế của mình và chất lượng lời giải của MFEA.
+
+Khi so sánh hiệu quả của mạng 2 lớp rộng với mạng nhiều lớp hơn nhưng sâu (3, 4, 5 lớp) như Hình V.1 với Hình V.7 hay trong Hình V.3 với Hình V.9, ..., ta thấy rằng các mạng sâu và hẹp có hiệu quả tốt tương đương với mạng nông và rộng hơn dù cho các mạng sâu hẹp ít tham số hơn nhiều. Điều này có được là do việc tăng độ sâu của mạng giúp tăng độ phức tạp của hàm xấp xỉ biểu diễn nên khớp dữ liệu học tốt hơn.
+
+Tổng kết thực nghiệm, ta thấy rõ hiệu quả của chất lượng mạng ANN học bởi các phương pháp tiếp cận dựa trên MFEA đặc biệt là MFEA-II. Tuy nhiên, để có được chất lượng lời giải tất MFEA-II phải trả giá về mặt thời gian. Trung bình thời gian thực nghiệm trên một bộ dữ liệu của MFEA-II sẽ nhiều gấp 3 lần so với CEA và 2.5 lần nếu so với MFEA-I.
+
+\subsection{Bài toán huấn luyện nhiều mô hình học tăng cường}
+
+Với bộ dữ liệu thực nghiệm đơn giản Acrobot, các thuật toán đều có thể giải ngay ở những thế hệ đầu tiên, và mức độ chênh lệch giữa tốc độ hội tụ và mức độ tập trung kết quả cuối cùng cũng không thể hiện rõ sự chênh lệch giữa từng giải thuật.
+Với bộ dữ liệu thực nghiệm phức tạp hơn như PixelCopter, FlappyBird, kết quả thực nghiệm trên các bộ dữ liệu học tăng cường chỉ rõ ưu điểm của cách tiếp cận của tiến hóa đa nhiệm. Về cả 3 mục tiêu chí so sánh giữa kết quả thực nghiệm, tốc độ hội tụ, mức độ phân bố kết quả cuối cùng thì kết quả được đưa ra bởi các thuật toán tiến hóa đa nhiệm đều vượt trội như trong hình \ref{fig:FLP_conv}, \ref{fig:FLP}, \ref{fig:PixelCopter_conv} và \ref{fig:PixelCopter}. Điều này có thể lý giải bởi với các bài toán có cấu trúc gần tương đồng với nhau việc trao đổi tri thức giữa các tác vụ giúp tăng tốc độ tối ưu trên từng tác vụ.
+Và khi so sánh giữa các giải thuật tiến hóa đa nhiệm với nhau thì MFEA-II thể hiện sự vượt trội so với MFEA-I nhờ ưu thế có thể xác định được mức độ chia sẻ tri thức phù hợp tại từng thời điểm.

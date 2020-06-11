@@ -1,0 +1,60 @@
+Các thực nghiệm được triển khai hoàn toàn trên hệ thống Ubuntu 18.04 LTS 64-bit với mô tả cấu hình như phía dưới:
+\begin{itemize}
+    \item CPU: Intel\textregistered Core\texttrademark i5-2430M CPU @ 2.40GHz × 2
+    \item RAM: 6GB
+    \item Ngôn ngữ lập trình: Python 3.6
+    \item Mã nguồn: https://github.com/minhquang4334/mfeaii-ann-rl
+\end{itemize}
+
+\subsection{Cấu hình cho bài toán huấn luyện các mạng neural khác cấu trúc}
+Các thuật toán đều chạy trên mỗi cấu hình thực nghiệm 30 lần. Độ đo hiệu quả giải thuật là MSE được thống kê trên cả bộ dữ liệu học và bộ dữ liệu kiểm định. Độ đo được thống kê trong 30 lần chạy để so sánh kết quả trung bình cùng độ lệch chuẩn.
+\begin{table}[h!]
+    \centering
+    \caption{Cấu hình và tham số giải thuật đề xuất cho bài toán huấn luyện các mạng neural khác cấu trúc}
+
+	\begin{tabular}{|l|c|c|c|c|}
+        \hline
+        \multirow{1}{*}{\textbf{Tham số}} & 
+        \multicolumn{1}{c|} {\textbf{Ký hiệu}} & \multicolumn{1}{c|}{\textbf{Giá trị}}\\ \hline
+        Kích thước quần thể đơn nhiệm & $N_k$ & 30\\
+        Số tác vụ & $K$ & 3\\
+        Kích thước quần thể đa nhiệm & $N$ & $N_k \cdot K$\\
+        Số thế hệ tiến hóa & $T$ & 1000\\
+        Chỉ số phân phối SBX & $\eta_c$ & 15\\
+        Tỉ lệ đột biến PMU & $\sigma$ & 0.2\\
+        Chỉ số đột biến PMU & $\eta_m$ & 15\\
+        % pswap & - & 0.5\\
+        Giá trị tham số cố định $rmp$ của thuật toán $MFEA$ & $rmp$ & 0.5\\
+        Giá trị khởi tạo các phần tử trong ma trận $RMP$ & $rmp_{k,j}$ & 0\\
+        Giá trị chặn dưới của từng phần tử $rmp_{kj}, k,j \in {K}$  & - & 0.1\\
+        Số lần chạy thống kê & - & 30\\ \hline
+    \end{tabular}
+    \label{tab:config:nbit}
+\end{table}
+\subsection{Cấu hình cho bài toán huấn luyện nhiều mô hình học tăng cường}
+Các thuật toán đều chạy trên mỗi cấu hình thực nghiệm 30 lần. Độ đo hiệu quả giải thuật là tổng phần thưởng thu được với bộ tham số hiện tại. Độ đo được thống kê trong 30 lần chạy để so sánh kết quả trung bình cùng độ lệch chuẩn.
+\begin{table}[h!]
+    \centering
+    \caption{Cấu hình và tham số giải thuật đề xuất cho bài toán huấn luyện nhiều mô hình học tăng cường}
+
+    \begin{tabular}{|l|c|c|c|c|}
+        \hline
+        \multirow{1}{*}{\textbf{Tham số}} & 
+        \multicolumn{1}{c|} {\textbf{Ký hiệu}} & \multicolumn{1}{c|}{\textbf{Giá trị}}\\ \hline
+        Kích thước quần thể đơn nhiệm & $N_k$ & 30\\
+        Số tác vụ & $K$ & 5\\
+        Kích thước quần thể đa nhiệm & $N$ & $N_k \cdot K$\\
+        Số thế hệ tiến hóa & $T$ & 200\\
+        Chỉ số phân phối SBX & $\eta_c$ & 15\\
+        Tỉ lệ đột biến PMU & $\sigma$ & 0.2\\
+        Chỉ số đột biến PMU & $\eta_m$ & 15\\
+        % pswap & - & 0.5\\
+        Giá trị tham số cố định $rmp$ của thuật toán $MFEA$ & $rmp$ & 0.5\\
+        Giá trị khởi tạo các phần tử trong ma trận $RMP$ & $rmp_{k,j}$ & 0\\
+        Giá trị chặn dưới của từng phần tử $rmp_{kj}, k,j \in {K}$  & - & 0.1\\
+        Số lần chạy thống kê & - & 30\\ \hline
+        
+    \end{tabular}
+    \label{tab:config:rl}
+\end{table}
+

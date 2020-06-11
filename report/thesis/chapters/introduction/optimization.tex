@@ -1,0 +1,44 @@
+\subsubsection{Tổng quan}
+Trong toán học và khoa học máy tính, bài toán tối ưu hóa là bài toán tìm kiếm lời giải tốt nhất trong tập tất cả các lời giải khả thi. Tối ưu hóa liên tục là một nhánh của tối ưu hóa cùng với tối ưu hóa rời rạc. Điểm khác nhau giữa chúng duy nhất ở không gian biến quyết định là liên tục hoặc rời rạc.
+
+Về mặt toán học, tối ưu hóa liên tục là cực tiểu hóa (thuật ngữ gốc: \textit{minimization}) hoặc cực đại hóa (thuật ngữ gốc: \textit{maximization}) một hàm liên tục sao cho thỏa mãn được các ràng buộc của bài toán. Trên thực tế, bài toán cực tiểu hóa hay cực đại hóa có thể dễ dàng biến đổi qua lại bằng các phép toán học đơn giản. Do vậy, không mất tính tổng quát, kể từ đây đến hết đồ án, khi đề cập đến thuật ngữ tối ưu hóa mà không có giải thích bổ sung thì sẽ ngầm định nói về bài toán cực tiểu hóa.
+
+\subsubsection{Bài toán tối ưu hóa liên tục}
+\begin{definition}
+    Bài toán tối ưu hóa liên tục: cực tiểu hóa hàm $f(x), x\in \mathbb{R}^n$ ký hiệu là $\min_{x \in \mathbb{R}^n} f(x)$ sao cho $g_i(x) \leq 0$ với $i = 1,...p$ và $h_i(x) = 0$ với $i = 1,....q$ trong đó:
+    \begin{itemize}
+        \item $x \in \mathbb{R}^n$ là biến quyết định
+        \item $f(x): \mathbb{R}^n \rightarrow \mathbb{R}$ là hàm mục tiêu
+        \item $g_i(x) \leq 0$ là các ràng buộc bất đẳng thức
+        \item $h_i(x) = 0$ là các rằng buộc đẳng thức
+    \end{itemize}
+\end{definition}
+    Lời giải của bài toán là nghiệm $x^* \in \mathbb{R}^n$ thỏa mãn $g_i(x^*) \leq 0, h_i(x^*) = 0$ và $f(x^*) <= f(x) \forall x \in \mathbb{R}^n$. Trong trường hợp $p = q = 0$ thì ta gọi đó là bài toán tối ưu hóa liên tục không ràng buộc. Trường hợp hàm $f(x)$ là hàm lồi, tức là thỏa mãn điều kiện:
+    \begin{center}
+    $f(\alpha x_1 + \beta x_2) \leq \alpha f(x_1) + \beta f(x_2); \forall x_1,x_2 \in \mathbb{R}^n; \forall \alpha \geq 0, \beta \geq 0, \alpha + \beta = 1,$
+    \end{center} thì ta gọi đó là bài toán \textit{tối ưu lồi}.
+    
+    Các phương pháp giải quyết bài toán tối ưu hóa liên tục không có ràng buộc
+    ở dạng tổng quát thường hướng đến coi bài toán ở dạng tìm kiếm hơn là đưa ra
+    một công thức tường minh. Điểm chung của các thuật toán đều xuất phát từ một lời giải $x_0$, sau đó thực hiện các chiến lược nhất định để cập nhật $x_1, x_2, ...x_k$ cho tới khi tìm được giá trị $f$ tốt nhất có thể. 
+    Các giải thuật chủ yếu khác nhau
+    về cách thức xây dựng chiến lược cập nhật lời giải từ những lời giải đã duyệt qua. Một số phương pháp thường được sử dụng như sau:
+    \begin{itemize}
+        \item \textbf{Phương pháp đường tìm kiếm}: Lựa chọn một hướng tìm kiếm cố định sau đó cập nhật lời giải ở mỗi bước lặp tìm kiếm. Ví dụ thuật toán gradient descent.
+        \item \textbf{Phương pháp heuristic}: Là các kỹ thuật dựa trên kinh nghiệm để giải quyết vấn đề, học hỏi hay khám phá nhằm đưa ra một giải pháp mà không được đảm bảo là tối ưu. Các phương pháp heuristic được sử dụng rộng rãi trong các bài toán tối ưu hóa liên tục bởi tính đơn giản và hiệu quả của chúng trong việc tìm ra một lời giải khả thi trong khoảng thời gian chấp nhận được. Ví dụ giải thuật tìm kiếm địa phương (thuật ngữ gốc: \emph{local search}), EA.
+    \end{itemize}
+    Trong đồ án này sẽ xem xét phương pháp heuristic để giải quyết bài toán tối ưu hóa liên tục mà cụ thể là sử dụng giải thuật tiến hóa. 
+% Từ những đặc điểm được mô tả trong phần 1.1.1, EA phù hợp với việc tìm giải pháp cực trị, có thể là tối thiểu hóa hoặc tối đa hóa. Loại bài toán này có thể được mô tả dưới dạng là một \emph{bài toán tối ưu}\cite{boyd2004cvx}. Không mất tính tổng quát, nó có dạng:
+% \begin{equation}
+%     \begin{array}{ll}{\text { Tối đa hàm }} & {f_{0}(x)} \\ {\text { Với điều kiện }} & {f_{i}(x) \leq b_{i}, \quad i=1, \ldots, m}\end{array}
+% \end{equation}
+% trong đó 
+% \begin{itemize}
+%     \item $x$ là \emph{giá trị tối ưu} của bài toán. Sao cho $x \in S$ với $S$ là tập các giải pháp phù hợp. $S$ có thể bao gồm hoặc tập giá trị nhị phân $\{0, 1\} ^ n$, tổ hợp rời rạc $\{1,2,...,k\}^n$ hoặc các giá trị liên tục thuộc $\mathbf{R} ^ n$.
+%     \item Hàm số $f_0: S \rightarrow \mathbf{R}$ được gọi là \emph{hàm mục tiêu}.
+%     \item Hàm số $f_{i} : \mathbf{R}^{n} \rightarrow \mathbf{R}, \; i=1, \ldots, m$ là \emph{bất đẳng thức ràng buộc} với các giá trị biên $b_{1}, \dots, b_{m}$
+% \end{itemize}\\
+% \emph{Bài toán tối ưu} nhằm mục tiêu tìm kiếm một \emph{giải pháp tối ưu} cho giá trị hàm mục tiêu nhỏ nhất trên tất cả các véc-tơ thảo mãn ràng buộc.
+% Giải pháp này được ký hiệu là $x*$.\\
+% Trong đồ án này, tôi sẽ tập trung xem xét bài toán tối ưu hóa trên miền liên tục không có ràng buộc, sau đây gọi là \emph{tối ưu hóa liên tục}. Có nhiều nhóm thuật toán để giải quyết bài toán \emph{tối ưu hóa liên tục}, trong đó có thể kể đến phương pháp phân tích như tối ưu hóa hàm lồi (convex optimization)\cite{boyd2004cvx}. Vì EA xem xét vấn đề giống như một bài toán hộp đen (black-box problem) nên cụ thể EA sẽ giải quyết vấn đề bằng cách sử dụng thông tin của hàm mục tiêu mà không sử dụng thông tin về cấu trúc của vấn đề. \\
+% Mục tiếp theo tôi sẽ giải thích quá trình thực hiện của EA và các thành phần cơ bản trong việc giải quyết vấn đề \emph{tối ưu hóa liên tục}.
