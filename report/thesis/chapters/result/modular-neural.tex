@@ -1,0 +1,109 @@
+\subsubsection{Bộ dữ liệu thực nghiệm}
+Bài toán chính để thực nghiệm là bài toán n-bit. Bài toán có đầu vào là một chuỗi bit độ dài n, yêu cầu đầu ra là xác định số bit 1 trong dãy là chẵn hay lẻ. Trong [53], tác giả thực nghiệm với các bài toán 6-bit, 7-bit và 8-bit đối với các mô hình mạng 1 lớp ẩn. Đồ án thực nghiệm với các mạng sâu nên cần tăng độ phức tạp của bài toán hơn nữa. Vì vậy luận văn đề xuất thực hiện giải các bài toán 8-bit, 9-bit và 10-bit. Ngoài ra, thực nghiệm còn đánh giá trên 4 bộ dữ liệu phân loại nhị phân thực tế của \emph{Đại học California, Irvine} (thuật ngữ gốc: University of California, Irvine - UCI) bao gồm: Breast cancer (9 đơn vị đầu vào), Tic-tac-toe (9 đơn vị đầu vào), Ionosphere (34 đơn vị đầu vào) và Credit screening (14 đơn vị đầu vào).
+\begin{table}[h!]
+    \centering
+    \caption{Các bài toán dùng trong thực nghiệm huấn luyện mạng ANN khác cấu trúc}
+
+	\begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \multirow{1}{*}{\textbf{STT}} & 
+        \multicolumn{1}{c|} {\textbf{Bài toán}} & \multicolumn{1}{c|}{Số đơn vị đầu vào} &  \multicolumn{1}{c|}{\textbf{Tổng số điểm dữ liệu}}\\ \hline
+        1 & 4-bit & 4  & 16 \\\hline
+        2 & 6-bit & 6  & 64 \\\hline
+        3 & 8-bit & 8  & 256 \\\hline
+        4 & 9-bit & 9  & 512 \\\hline
+        5 & 10-bit & 10  & 1024 \\\hline
+        6 & Breast cancer & 9  & 699 \\\hline
+        7 & Tic-tac-toe & 9  & 958 \\\hline
+        8 & Ionosphere & 34  & 351 \\\hline
+        9 & Credit screening & 14  & 653 \\\hline
+
+    \end{tabular}
+    \label{tab:result:nbit}
+\end{table}
+\subsubsection{Cấu hình ANN thực nghiệm}
+Thực nghiệm trong đồ án được xét dựa trên tiêu chí độ sâu của mạng ANN. Các bài toán với các mạng ANN có độ sâu giống nhau và khác nhau được cấu hình thực nghiệm với $K=3$. Thực nghiệm được chia thành 2 phần chính gồm:
+\begin{itemize}
+    \item Mạng sâu cùng số lớp: Độ sâu mạng $L = 1$ và $L = 2$ cho tất cả các tác vụ học, các cấu hình mạng khác nhau về số lượng đơn vị xử lý trên mỗi lớp. Thực nghiệm này nhắm đến đánh giá hiệu quả chia sẻ trọng số theo chiều rộng của mạng.
+    \item Mạng sâu khác số lớp: Độ sâu mạng của mỗi tác vụ học là khác nhau, thay đổi từ $L = 3$, đến $L = 5$, số lượng đơn vị xử lý trên mỗi lớp đều giống nhau và được thiết lập bằng 2. Thực nghiệm này nhắm đến đánh giá hiệu quả chia sẻ trọng số theo chiều sâu của mạng.
+\end{itemize}
+Tổng kết lại ta có các bảng cấu hình thực nghiệm sau:    
+    \begin{table}[h!]
+        \centering
+        \caption{Bộ dữ liệu huấn luyện ANN cùng độ sâu 1 lớp ẩn đơn giản}
+
+    	\begin{tabular}{|c|c|c|c|c|}
+            \hline
+            \multirow{1}{*}{\textbf{Bài toán}} & 
+            \multicolumn{1}{c|} {\textbf{Tên tác vụ}} & \multicolumn{1}{c|}{\textbf{Cấu trúc lần lượt của từng tác vụ}}\\ \hline
+            
+            \multirow{1}{*} 
+            {4bit} 
+            &  4bit (4-5-6) &  (4,4,1)-(4,5,1)-(4,6,1)\\\hline
+            \multirow{2}{*} 
+            {6bit} 
+            &  6bit (5-6-7) & (6,5,1)-(6,6,1)-(6,7,1)\\ \cline{2-3}
+            &  6bit (6-7-8) & (6,6,1)-(6,7,1)-(6,8,1)\\ \hline
+            \multirow{2}{*} 
+            {8bit} 
+            &  8bit (5-6-7) & (8,5,1)-(8,6,1)-(8,7,1)\\\cline{2-3}
+            &  8bit (6-7-8) & (8,6,1)-(8,7,1)-(8,8,1)\\\hline
+
+        \end{tabular}
+        \label{tab:result:nbit}
+    \end{table}
+    
+    \begin{table}[h!]
+        \centering
+        \caption{Bộ dữ liệu huấn luyện nhiều mô ANN đa lớp}
+
+    	\begin{tabular}{|c|c|c|c|c|}
+            \hline
+            \multirow{2}{*}{\textbf{Bài toán}} & 
+            \multicolumn{2}{c|} {\textbf{ANN cùng độ sâu}} & \multicolumn{2}{c|}{\textbf{ANN khác độ sâu}}\\ \cline{2-5}
+            &\multicolumn{1}{c|} {\textbf{Tên tác vụ}} & \multicolumn{1}{c|}{\textbf{Cấu trúc mạng}} & \multicolumn{1}{c|} {\textbf{Tên tác vụ}} & \multicolumn{1}{c|}{\textbf{Cấu trúc mạng}}\\ \hline
+            
+            \multirow{3}{*} 
+            {8bit} &  Tác vụ 1 & (6,2) & Tác vụ 2 & (2,2,2,2,2) \\ \cline{2-5}
+             & Tác vụ 2 & (6,3) & Tác vụ 2 & (2,2,2,2)\\ \cline{2-5}
+            & Tác vụ 3 & (6,4) & Tác vụ 3 & (2,2,2)\\ \hline
+            \multirow{3}{*} 
+            {9bit} &  Tác vụ 1 & (6,2) & Tác vụ 1 & (2,2,2,2,2) \\ \cline{2-5}
+             & Tác vụ 2 & (6,3) & Tác vụ 2 & (2,2,2,2)\\ \cline{2-5}
+            & Tác vụ 3 & (6,4) & Tác vụ 3 & (2,2,2) \\ \hline
+            \multirow{3}{*} 
+            {10bit} &  Tác vụ 1 & (6,2) & Tác vụ 1 & (2,2,2,2,2) \\ \cline{2-5}
+             & Tác vụ 2 & (6,3) & Tác vụ 2 & (2,2,2,2)\\ \cline{2-5}
+            & Tác vụ 3 & (6,4) & Tác vụ 3 & (2,2,2)\\ \hline
+        \end{tabular}
+        \label{tab:result:nbit}
+    \end{table}
+    
+    \begin{table}[h!]
+        \centering
+        \caption{Danh sách các bộ dữ liệu UCI cho huấn luyện ANN}
+    	\begin{tabular}{|c|c|c|c|c|}
+            \hline
+            \multirow{2}{*}{\textbf{Bài toán}} & 
+            \multicolumn{2}{c|} {\textbf{ANN cùng độ sâu}} & \multicolumn{2}{c|}{\textbf{ANN khác độ sâu}}\\ \cline{2-5}
+            &\multicolumn{1}{c|} {\textbf{Tên tác vụ}} & \multicolumn{1}{c|}{\textbf{Cấu trúc mạng}} & \multicolumn{1}{c|} {\textbf{Tên tác vụ}} & \multicolumn{1}{c|}{\textbf{Cấu trúc mạng}}\\ \hline
+            
+            \multirow{3}{*} 
+            {ionosphere} &  Tác vụ 1 & (5,2) & Tác vụ 2 & (2,2,2,2,2) \\ \cline{2-5}
+             & Tác vụ 2 & (5,3) & Tác vụ 2 & (2,2,2,2)\\ \cline{2-5}
+            & Tác vụ 3 & (5,4) & Tác vụ 3 & (2,2,2)\\ \hline
+            \multirow{3}{*} 
+            {ticTacToe} &  Tác vụ 1 & (5,2) & Tác vụ 1 & (2,2,2,2,2) \\ \cline{2-5}
+             & Tác vụ 2 & (5,3) & Tác vụ 2 & (2,2,2,2)\\ \cline{2-5}
+            & Tác vụ 3 & (5,4) & Tác vụ 3 & (2,2,2) \\ \hline
+            \multirow{3}{*} 
+            {creditScreening} &  Tác vụ 1 & (6,2) & Tác vụ 1 & (2,2,2,2,2) \\ \cline{2-5}
+             & Tác vụ 2 & (6,3) & Tác vụ 2 & (2,2,2,2)\\ \cline{2-5}
+            & Tác vụ 3 & (6,4) & Tác vụ 3 & (2,2,2)\\ \hline
+            \multirow{3}{*} 
+            {breastCancer} &  Tác vụ 1 & (6,2) & Tác vụ 1 & (2,2,2,2,2) \\ \cline{2-5}
+             & Tác vụ 2 & (6,3) & Tác vụ 2 & (2,2,2,2)\\ \cline{2-5}
+            & Tác vụ 3 & (6,4) & Tác vụ 3 & (2,2,2)\\ \hline
+        \end{tabular}
+        \label{tab:result:nbit}
+    \end{table}

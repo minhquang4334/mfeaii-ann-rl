@@ -1,0 +1,76 @@
+\documentclass[pdf,10pt]{beamer}
+\usepackage{fontspec}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lmodern}
+\usepackage{relsize}
+\usepackage{caption}
+\captionsetup[figure]{font=scriptsize}
+\usepackage[style=verbose,backend=biber]{biblatex}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\usepackage{multirow}
+\usepackage[font=scriptsize,labelfont=bf]{caption}
+
+% Set theme
+\usetheme{CambridgeUS}
+
+% Set indent width
+\setlength{\parindent}{1cm}
+
+% Display the tableofcontents before a section
+\AtBeginSection[]
+{
+    \begin{frame}<beamer>
+        \frametitle{Agenda}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
+
+%Global Background must be put in preamble
+% \usebackgroundtemplate{
+%     \includegraphics[width=2cm]{images/background.png}%
+% }
+
+% Add source of bibliography
+\addbibresource{slide.bib}
+
+% Title
+\title{Tiến hóa đa nhiệm trong huấn luyện mạng neural}
+\author[Hoàng Minh Quang]{Hoàng Minh Quang\\[1ex]  \small GVHD: PGS.TS Huỳnh Thị Thanh Bình}
+
+\titlegraphic{
+	% adjust logo position
+	\vspace{0cm}
+	\includegraphics[width=1.5cm]{images/logohust.png}
+	% adjust logo horizontal spacing
+	\hspace*{0.2cm}
+	\includegraphics[width=2cm]{images/logo-q-soict.jpg}
+	% adjust title position
+	\vspace{4cm}
+}
+
+% Main contents
+\begin{document}
+    \relscale{0.8}
+	\setlength\itemsep{0.03em}
+	\begin{frame}
+	    \titlepage
+	\end{frame}
+
+	\begin{frame}
+	    \frametitle{Outline}
+	    \tableofcontents
+	\end{frame}
+    \section{Tổng quan tiến hóa đa nhiệm}
+    \input{mfea}
+    \section{Bài toán huấn luyện mạng neural}
+    \input{neural}
+    \section{Huấn luyện nhiều mạng neural đa cấu trúc}
+    \input{problem_neural}
+    \section{Huấn luyện nhiều mạng neural trên các môi trường khác nhau}
+    \input{problem_rl}
+    \section{Kết quả thực nghiệm}
+    \input{results}
+	
+\end{document}

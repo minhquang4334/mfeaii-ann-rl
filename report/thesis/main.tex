@@ -1,0 +1,86 @@
+% README
+% ------
+% apt install texlive-full texlive-science
+% thieu gi thieu apt search <cai bi thieu> hoac tra google
+% sau do dien vao cac file input va compile file main
+\documentclass{hust}
+\usepackage[utf8]{vietnam}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\newtheorem{example}{Ví dụ}[section]
+\usepackage{chngcntr}
+\usepackage{mathptmx}
+\graphicspath{ {./images/} }
+% \lfoot{Hoang Minh Quang - 20152945 - AS K60}
+\usepackage{float}
+
+\usepackage[font=footnotesize,labelfont=bf]{caption}
+\usepackage[
+  top=2cm,
+  bottom=2cm,
+  left=3.5cm,
+  right=2.5cm,
+  headheight=17pt, % as per the warning by fancyhdr
+  includehead,includefoot,
+  heightrounded, % to avoid spurious underfull messages
+]{geometry} 
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\footrulewidth}{0pt}
+% \fancyhead[LE,RO]{Hoàng Minh Quang - 20152945 - AS K60}
+% \fancyhead[RE,LO]{HUST}
+\fancyhead[LE,RO]{\leftmark}
+\fancyfoot[CE,CO]{\thepage}
+
+\input{acro}
+\begin{document}
+\newtheorem{definition}{Định nghĩa}[section]
+
+\input{chapters/other/cover}
+\pagenumbering{roman}
+
+\input{chapters/other/mission}
+
+\addcontentsline{toc}{chapter}{Lời cảm ơn}
+\chapter*{Lời cảm ơn}
+\input{chapters/other/acknowledgement}
+
+\addcontentsline{toc}{chapter}{Tóm tắt}
+\chapter*{Tóm tắt đồ án}
+\input{chapters/other/abstract}
+
+\input{chapters/other/abstract-vi}
+
+% \addcontentsline{toc}{chapter}{Lời nói đầu}
+% \chapter*{Lời nói đầu}
+% \input{chapters/other/preface}
+
+\newpage
+\tableofcontents
+\newpage
+\addcontentsline{toc}{chapter}{Thuật ngữ}
+\chapter*{Thuật ngữ}
+\input{chapters/other/glossaries}
+\listoftables
+\addcontentsline{toc}{chapter}{Danh sách bảng}
+\listoffigures
+\addcontentsline{toc}{chapter}{Danh sách hình vẽ}
+
+\acresetall
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\input{chapters/introduction/index}
+\input{chapters/mfea2/index}
+\input{chapters/problem/index}
+\input{chapters/problem_rl/index}
+\input{chapters/result/index}
+
+\chapter*{Kết luận}
+\addcontentsline{toc}{chapter}{Kết Luận}
+\input{chapters/other/conclusion}
+
+\bibliographystyle{plain}
+\bibliography{ref}
+\end{document}

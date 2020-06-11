@@ -1,0 +1,34 @@
+\label{chap:propose}
+Phần này sẽ giới thiệu giải thuật đề xuất để áp dụng tiến hóa đa nhiệm giải quyết nhiều mô hình học tăng cường khác nhau.
+\subsection{Mã hóa và giải mã cá thể}
+Để mã hóa mô hình mạng neural vào một kiểu gen đồ án sử dụng phương pháp sử dụng một nhiễm sắc thể đơn để biểu diễn một policy với các gen là trọng số của mạng Neural như trong hình \ref{fig:problem:policy}. Phương pháp mã hóa và giải mã mạng neural này sẽ dùng phương pháp mã hóa và giải mã đã được trình bày ở chương 3.
+\begin{figure}[ht]
+    \centering
+    \fbox{\includegraphics[width=0.7\linewidth]{policy.png}}
+    \caption{Cách biểu diễn policy đơn giản bao gồm các trọng số của mạng neural.}
+    \label{fig:problem:policy}
+\end{figure}
+% Một mô hình mạng policy được biểu diễn bởi một cấu trúc mạng $H=(h_1,h_2,...h_k)$ có số lớp là $L$ ta sẽ thực hiện tính toán kích thước của không gian chung tương ứng với cấu trúc mạng này:
+% % \begin{align}
+% %     D_{chung} = \sum_{l={1,...L}}(h_{l-1}\cdot h_l + h_l)
+% % \end{align}
+
+% Các tham số của mạng sẽ được mã hóa lần lượt vào không gian chung này. Khi cần đánh giá fitness trên một biểu cá thể ta sẽ giải mã từ nhiễm sắc thể về các bộ tham số $w$ và độ lệch $b$ tương ứng để tính tổng phần thưởng thu được với bộ tham số này.
+
+\subsection{Xây dựng không gian tìm kiếm chung}
+\begin{figure}[ht]
+    \centering
+    \scalebox{0.85}{\fbox{\includegraphics[width=\linewidth]{proposed_encoding.png}}}
+    \caption{Quá trình mã hóa và giải mã policy tương wúng với các lớp của mạng}
+    \label{fig:problem:policy-decode}
+\end{figure}
+
+Cách thức xây dựng không gian tìm kiếm chung như trong hình \ref{fig:problem:policy-decode} mặc dù đơn giản nhưng nó cũng đã chứng minh độ hiệu quả với hầu hết các thuật toán liên quan đến các ANN có cấu trúc giống nhau. Với phương pháp này, ANN sẽ được biểu diễn dưới dạng các lớp, tham số của các lớp sẽ lần lượt biểu diễn theo thứ tự trong nhiễm sắc thể. Phương pháp xây dựng cá thể cũng sẽ tương tự như bài toán huấn luyện nhiều ANN khác cấu trúc ở chương \ref{chap:problem}. Với bài toán này do sự khác nhau nằm ở bộ dữ liệu đầu vào (trạng thái của môi trường) nên cách thức xây dựng mô hình mã hóa, giải mã cũng sẽ đơn giản hơn. Có thể áp dụng phương pháp mã hóa trực tiếp. Mỗi cá thể sẽ có kích thước tương ứng với không gian tìm kiếm chung:
+\begin{align}
+    D_{chung} = \sum_{l={1,...L}}(h_{l-1}\cdot h_l + h_l)
+    \label{rl:dmulti}
+\end{align}
+trong đó $h_1,h_2,...,h_k$ là kích thước của mỗi lớp ẩn, $l$ là số lượng lớp của mô hình mạng biểu diễn policy.
+
+\subsection{Tiến hóa đa nhiệm đề xuất}
+\input{chapters/problem_rl/propose/multitask}
