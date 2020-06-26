@@ -4,16 +4,27 @@ People rarely solve problems without any knowledge, knowledge about the problem 
 
 Besides, neural network training problem is a problem that is very noticeable in the field of artificial intelligence. Along with training a common neural network, training multiple neural networks simultaneously to take advantage of complementary between networks is also a huge challenge. Especially the application of intensive math problems, because in this environment the application of methods related to derivatives is increasingly showing limitations. With the idea of ​​MFEA-II, I believe that the algorithm has a great potential in solving the above challenge. However, in my understanding, the application of multitasking evolution algorithm to train multiple neural networks at the same time is still a new direction, especially there have been no studies applying MFEA-II to solve. This problem.
 
-## Motivation
-
-
 ## Configuration
->virtualenv venv
+```
+virtualenv venv
+source venv/bin/activate
+pip3 install -r requirement.txt
+```
+## Setting mysql
+> https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-18-04
 
->source venv/bin/activate
+## Create Database for store train data on each iterator
+```
+mysql -u username -ppassword
+create database mfea-ann-rl
+```
 
->pip3 install -r requirement.txt
+## Change experiment config
+`nano config.yaml`
 
->python3 run_init.py
+## Run Experiment
+```
+python3 run_init.py
 
->python3 run_experiment.py
+python3 run_experiment.py
+```
